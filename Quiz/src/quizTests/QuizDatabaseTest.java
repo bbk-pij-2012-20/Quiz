@@ -27,9 +27,10 @@ public class QuizDatabaseTest {
 	@Test
 	public void testGetQuestion() {
 		
-		String actualAnswer = dbObj.getQuestion(1);
+		String actualAnswer = dbObj.getQuestion(2);
 		String expectedAnswer = "How high (in metres above sea level) is the highest point in ";
-		System.out.println("actualAnswer at pos 1: "+ actualAnswer);
+		System.out.println("actualAnswer: "+ actualAnswer);
+		System.out.println("expectedAnswer: "+ expectedAnswer);
 		assertEquals(expectedAnswer, actualAnswer);
 
 	}

@@ -10,17 +10,20 @@ public interface QueAndAns {
 	void generateQueAndAnsList();
 	
 	/**
-	 * Composes a question made of two parts by randomly selecting them from a database.
+	 * Composes a question made of two parts by random selection of each part from two lists stored in QuizDatabase.
 	 * 
-	 * @param listIndex
+	 * @param listIndex   0 or 1, the position of data in the QueAndAns list. (0 holds index of question type, 1 holds 
+	 *                    the index of country name).  
+	 *                    
 	 */
 	void composeQuestionIndices(int listIndex);
 	
 	
 	/**
-	 * Generates a random numerical answer. 
+	 * Generates a random numerical answer within pre-defined boundaries and with margins of separation from other 
+	 * answers. 
 	 * 
-	 * @return int   an int that is within a valid range and is not too similar to 
+	 * @return int   returns an int that is within a valid range and is separated from 
 	 *               the other 3 answers.
 	 */
 	int composeFalseAnswer();

@@ -120,18 +120,18 @@ public class QueAndAnsTest {
 	@Test
 	public void testComposeFalseAnswer() {
 		
-	/*	int falseAnswer = qAObj.composeFalseAnswer();
+		qAObj.getQue_AnsList()[0] = 2;
+		int randomFalseAnswer = qAObj.composeFalseAnswer();
 		boolean aValidFalseAnswer = true;
 		
-		if (randomQuestionIndex > 2 && randomQuestionIndex < 0) {
+		if (randomFalseAnswer < 800 || randomFalseAnswer > 8000) {
 			
-			aValidQuestionIndex = false;
-			break;
+			aValidFalseAnswer = false;
 			
 		}
-		
-		boolean actualAnswer = aValidQuestionIndex;
-		assertTrue(actualAnswer);
-*/
+	
+		assertTrue(aValidFalseAnswer);
 
+	}
+	
 }

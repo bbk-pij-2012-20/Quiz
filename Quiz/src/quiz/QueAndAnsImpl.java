@@ -49,13 +49,27 @@ public class QueAndAnsImpl implements QueAndAns {
 	}
 
 	/**
-	 * Computes whether a candidate wrong answer value is valid according to a predetermined range (via calling getMaxInRange())
-	 * and margin of separation from other values. 
+	 * Rounds off candidate values to the nearest 10 (for numbers greater than 100) 
+	 * or 100 (for number greater than 100).  
+	 * 
+	 * @param candidateValue   takes a candidate false answer int. 
+	 * @return                 returns the rounded off int (if greater than 10), otherwise
+	 *                         the same number is returned.
+	 */
+	private int roundOff(int candidateValue){
+		//TODO
+		return 1;
+		
+	}
+	
+	/**
+	 * Computes whether a candidate wrong answer value is valid according to a two limits: 
+	 * 1. pre-defined max and min values (via calling getMaxInRange()), 
+	 * 2. pre-defined margins of separation between the answer values. 
 	 *  
 	 * @param candidateValue   takes an int to be evaluated for its validity.
 	 * @return                 returns true if candidate value is acceptable.
 	 */
-
 	private boolean isNicelyDistributed(int candidateValue) {
 		// TODO Auto-generated method stub
 		return false;

@@ -100,6 +100,24 @@ public class QueAndAnsTest {
 	}
 			
 	@Test
+	public void testRoundOff() {
+
+		int actualAnswer = qAObj.roundOff(1111);		
+		int expectedAnswer = 1100;
+		int actualAnswer2 = qAObj.roundOff(8);		
+		int expectedAnswer2 = 8;
+		int actualAnswer3 = qAObj.roundOff(95);		
+		int expectedAnswer3 = 90;
+		
+		System.out.println("actual: "+actualAnswer);
+		System.out.println("actual2: "+actualAnswer2);
+		System.out.println("actual3: "+actualAnswer3);
+		assertEquals(expectedAnswer, actualAnswer);
+		
+	}
+	
+	
+	@Test
 	public void testComposeFalseAnswer() {
 		
 	/*	int falseAnswer = qAObj.composeFalseAnswer();

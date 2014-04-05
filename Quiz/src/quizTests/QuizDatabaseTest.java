@@ -37,7 +37,12 @@ public class QuizDatabaseTest {
 
 	@Test
 	public void testGetCountry() {
-		fail("Not yet implemented");
+		
+		String actualAnswer = dbObj.getCountry(8);
+		String wrongAnswer = "Lesotho?";
+		String expectedAnswer = "Kazakhstan?";
+		assertEquals(expectedAnswer, actualAnswer);
+		
 	}
 
 	@Test

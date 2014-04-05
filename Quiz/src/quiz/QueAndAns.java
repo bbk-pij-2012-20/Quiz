@@ -29,6 +29,13 @@ public interface QueAndAns {
 	int composeFalseAnswer();
 	
 	/**
+	 * Getter for question and answer list que_AnsList.
+	 * 
+	 * @return   returns the list of 2 question indices and 4 answers.
+	 */
+	int[] getQue_AnsList();
+	
+	/**
 	 * Computes whether a candidate wrong answer value is valid according to a predetermined range (via calling getMaxInRange())
 	 * and margin of separation from other values. 
 	 *  

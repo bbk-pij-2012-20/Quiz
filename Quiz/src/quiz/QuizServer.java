@@ -6,6 +6,11 @@ import java.io.Serializable;
 
 public class QuizServer extends UnicastRemoteObject implements QuizService {
 
+	private int score = 0;
+	private int totalNoOfQuestions; 
+	private int noOfAnswersPerQuestion;
+	private QueAndAns[] listOfQAndALists;
+
 	protected QuizServer() throws RemoteException {
 		super();
 		// TODO Auto-generated constructor stub

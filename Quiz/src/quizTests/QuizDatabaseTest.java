@@ -6,10 +6,18 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import quiz.QuizDatabaseImpl;
+
 public class QuizDatabaseTest {
 
+	QuizDatabaseImpl dbObj;
+	
+	
 	@Before
 	public void setUp() throws Exception {
+		
+		dbObj = new QuizDatabaseImpl();
+	
 	}
 
 	@After
@@ -18,7 +26,12 @@ public class QuizDatabaseTest {
 
 	@Test
 	public void testGetQuestion() {
-		fail("Not yet implemented");
+		
+		String actualAnswer = dbObj.getQuestion(1);
+		String expectedAnswer = "How high (in metres above sea level) is the highest point in ";
+		System.out.println("actualAnswer at pos 1: "+ actualAnswer);
+		assertEquals(expectedAnswer, actualAnswer);
+
 	}
 
 	@Test

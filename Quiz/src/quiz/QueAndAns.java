@@ -28,4 +28,20 @@ public interface QueAndAns {
 	 */
 	int composeFalseAnswer();
 	
+	/**
+	 * Computes whether a candidate wrong answer value is valid according to a predetermined range (via calling getMaxInRange())
+	 * and margin of separation from other values. 
+	 *  
+	 * @param candidateValue   takes an int to be evaluated for its validity.
+	 * @return                 returns true if candidate value is acceptable.
+	 */
+	boolean isNicelyDistributed(int candidateValue);
+	
+	/**
+	 * Determines the maximum acceptable value according to the question type. 
+	 * 
+	 * @return      returns an maximum int value. 
+	 */
+	int getMaxInRange();
+	
 }

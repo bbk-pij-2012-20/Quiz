@@ -65,8 +65,10 @@ public class QueAndAnsImpl implements QueAndAns {
 	 * 
 	 * @return int   returns an int that is within a valid range and is separated from 
 	 *               the other 3 answers by predefined margins.
+	 *               
+	 * (temporarily made public for JUnit test)  
 	 */
-	private int composeFalseAnswer() {
+	public int composeFalseAnswer() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -78,8 +80,10 @@ public class QueAndAnsImpl implements QueAndAns {
 	 * @param candidateValue   takes a candidate false answer int. 
 	 * @return                 returns the rounded off int (if greater than 10), otherwise
 	 *                         the same number is returned.
+	 *                         
+	 * (temporarily made public for JUnit test)  
 	 */
-	private int roundOff(int candidateValue){
+	public int roundOff(int candidateValue){
 		//TODO
 		return 1;
 		
@@ -92,8 +96,10 @@ public class QueAndAnsImpl implements QueAndAns {
 	 *  
 	 * @param candidateValue   takes an int to be evaluated for its validity.
 	 * @return                 returns true if candidate value is acceptable.
+	 *	 
+	 * (temporarily made public for JUnit test)  
 	 */
-	private boolean isNicelyDistributed(int candidateValue) {
+	public boolean isNicelyDistributed(int candidateValue) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -102,8 +108,10 @@ public class QueAndAnsImpl implements QueAndAns {
 	 * Determines the maximum acceptable value according to the question type. 
 	 * 
 	 * @return      returns an maximum int value. 
+	 * 
+	 * (temporarily made public for JUnit test)  
 	 */
-	private int getMaxInRange() {
+	public int getMaxInRange() {
 		// TODO Auto-generated method stub
 		return 0;
 	}

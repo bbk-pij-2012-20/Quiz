@@ -26,6 +26,13 @@ public class QueAndAnsTest {
 		
 	}
 
+	/**
+	 * Should only be tested after tests for methods that are called 
+	 * by generateQueAndAnsList() pass their tests (testGenerateQuestionIndices(),
+	 * QuizDatabase's constructor, QuizDatabase's testGetAnswer(), 
+	 * testComposeFalseAnswer(), testRoundOff(), testisNicelyDistributed()
+	 * and testGetMaxInRange()).
+	 */
 	@Test
 	public void testGenerateQueAndAnsList() {
 
@@ -54,6 +61,7 @@ public class QueAndAnsTest {
 	 * (However it is not ideal as it is does not fail if no numbers
 	 * are generated, i.e. the index is a member field, so is always initialised to 0)
 	 * 
+	 * (needs to pass before test for calling method (testGenerateQueAndAnsList()))
 	 */
 	@Test
 	public void testGenerateQuestionIndices() {
@@ -88,6 +96,10 @@ public class QueAndAnsTest {
 		
 	}
 
+	/**
+	 * test that needs to pass before test for calling methods 
+	 * (isNicelyDistributed(int) & composeFalseAnswer()).
+	 */
 	@Test
 	public void testGetMaxInRange() {
 		
@@ -99,6 +111,10 @@ public class QueAndAnsTest {
 		
 	}
 
+	/**
+	 * together with testRoundOff(), needs to pass before test
+	 * for calling method (composeFalseAnswer()).
+	 */
 	@Test
 	public void testIsNicelyDistributed() {
 		
@@ -120,6 +136,11 @@ public class QueAndAnsTest {
 		
 	}
 			
+	/**
+	 * together with testIsNicelyDistributed(), needs to pass before test
+	 * for calling method (composeFalseAnswer()).
+	 * 
+	 */
 	@Test
 	public void testRoundOff() {
 
@@ -137,7 +158,9 @@ public class QueAndAnsTest {
 		
 	}
 	
-	
+	/**
+	 * needs to pass before test for calling method (testGenerateQueAndAnsList())
+	 */
 	@Test
 	public void testComposeFalseAnswer() {
 		

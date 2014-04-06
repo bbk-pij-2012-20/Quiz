@@ -45,14 +45,15 @@ public class QueAndAnsImpl implements QueAndAns {
 	}
 
 	/**
-	 * Composes a question made of two parts by random selection of each part from two lists stored in QuizDatabase.
+	 * Generates a random number, stored in one of two fields that encode the type of question
+	 * or country name that make up the questions. Thus, it is called twice from generateQueAndAnsList(). 
 	 * 
-	 * @param listIndex   0 or 1, the position of data in the QueAndAns list. (0 holds index of question type, 1 holds 
-	 *                    the index of country name).  
+	 * @param listIndex   0 or 1, the position of data in the QueAndAns list. (0 holds index of question 
+	 *                    type, 1 holds the index of country name).  
 	 * 
 	 * (temporarily made public for JUnit test)             
 	 */
-	public void composeQuestionIndices(int listIndex) {
+	public void generateQuestionIndices(int listIndex) {
 		// TODO Auto-generated method stub
 
 	}

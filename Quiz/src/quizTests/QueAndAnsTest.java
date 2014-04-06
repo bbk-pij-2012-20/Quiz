@@ -56,9 +56,9 @@ public class QueAndAnsTest {
 	 * 
 	 */
 	@Test
-	public void testComposeQuestionIndices() {
+	public void testGenerateQuestionIndices() {
 		
-		qAObj.composeQuestionIndices(0);
+		qAObj.generateQuestionIndices(0);
 		boolean actualAnswer = true;
 		
 		for (int i = 0; i < 20; i++) {
@@ -72,7 +72,7 @@ public class QueAndAnsTest {
 		
 		}
 
-		qAObj.composeQuestionIndices(1);
+		qAObj.generateQuestionIndices(1);
 
 		for (int i = 0; i < 20; i++) {
 			System.out.println("qAObj.getCountryListIndex()"+qAObj.getCountryListIndex());			

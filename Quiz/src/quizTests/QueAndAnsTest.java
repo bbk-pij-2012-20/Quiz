@@ -49,20 +49,41 @@ public class QueAndAnsTest {
 	
 	}
 
+	/**
+	 * Tests whether the method generates numbers within the correct range.
+	 * (However it is not ideal as it is does not fail if no numbers
+	 * are generated, i.e. the index is a member field, so is always initialised to 0)
+	 * 
+	 */
 	@Test
 	public void testComposeQuestionIndices() {
 		
-		int randomQuestionIndex = qAObj.composeQuestionIndices(0);
-		boolean aValidQuestionIndex = true;
+		qAObj.composeQuestionIndices(0);
+		boolean actualAnswer = true;
 		
-		if (randomQuestionIndex > 2 && randomQuestionIndex < 0) {
+		for (int i = 0; i < 20; i++) {
+			System.out.println("qAObj.getQuestionListIndex()"+qAObj.getQuestionListIndex());
+		
+			if (	qAObj.getQuestionListIndex() > 2 || qAObj.getQuestionListIndex() < 0) {
 			
-			aValidQuestionIndex = false;
-			break;
-			
+				actualAnswer = false;
+				System.out.println("qAObj.getQuestionListIndex()"+qAObj.getQuestionListIndex());
+			}
+		
 		}
+
+		qAObj.composeQuestionIndices(1);
+
+		for (int i = 0; i < 20; i++) {
+			System.out.println("qAObj.getCountryListIndex()"+qAObj.getCountryListIndex());			
+			
+			if (	qAObj.getCountryListIndex() > 9 || qAObj.getCountryListIndex() < 0) {
+			
+				actualAnswer = false;
+			}
 		
-		boolean actualAnswer = aValidQuestionIndex;
+		}
+
 		assertTrue(actualAnswer);
 		
 	}

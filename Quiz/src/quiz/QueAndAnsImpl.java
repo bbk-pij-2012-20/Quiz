@@ -1,12 +1,13 @@
 package quiz;
 
 import java.util.IllegalFormatException;
+import java.util.Random;
 
 public class QueAndAnsImpl implements QueAndAns {
 
 	private int	questionListIndex;
 	private int	countryListIndex;
-	private QuizDatabase database;
+	private QuizDatabaseImpl database;
 	private int noOfAnswersPerQuestion;
 	private int[] que_AnsList;
 	
@@ -20,6 +21,7 @@ public class QueAndAnsImpl implements QueAndAns {
 		
 		this.noOfAnswersPerQuestion = noOfAnswersPerQuestion;
 		que_AnsList	= new int[2+noOfAnswersPerQuestion];
+		database = new QuizDatabaseImpl();
 		
 	}
 	
@@ -57,13 +59,23 @@ public class QueAndAnsImpl implements QueAndAns {
 	
 	@Override
 	public void generateQueAndAnsList() {
-		// TODO Auto-generated method stub
+
+		generateQuestionIndices(0);
+		database = new QuizDatabaseImpl();
+		que_AnsList[0] = questionListIndex;
+		generateQuestionIndices(1);
+		que_AnsList[1] = countryListIndex;
+		que_AnsList[2] = database.getAnswer(questionListIndex, countryListIndex);
+		que_AnsList[3] = composeFalseAnswer(); 		
+		que_AnsList[4] = composeFalseAnswer();
+		que_AnsList[5] = composeFalseAnswer();
 
 	}
 
 	/**
-	 * Generates a random number, stored in one of two fields that encode the type of question
-	 * or country name that make up the questions. Thus, it is called twice from generateQueAndAnsList(). 
+	 * Generates a random number, stored in one of two fields (questionListIndex, countryListIndex) that encode 
+	 * the type of question or country name that make up the questions. Thus, it is called twice from 
+	 * generateQueAndAnsList(). 
 	 * 
 	 * @param listIndex   0 or 1, the position of data in the QueAndAns list. (0 holds index of question 
 	 *                    type, 1 holds the index of country name).  
@@ -71,7 +83,18 @@ public class QueAndAnsImpl implements QueAndAns {
 	 * (temporarily made public for JUnit test)             
 	 */
 	public void generateQuestionIndices(int listIndex) {
-		// TODO Auto-generated method stub
+		
+		Random randomObj = new Random();
+		
+		if (listIndex == 0) {
+		
+			questionListIndex = randomObj.nextInt(database.questionListLength);
+		
+		} else if (listIndex == 1) {
+		
+			countryListIndex = randomObj.nextInt(database.countryListLength);
+			
+		}
 
 	}
 
@@ -86,8 +109,18 @@ public class QueAndAnsImpl implements QueAndAns {
 	 * (temporarily made public for JUnit test)  
 	 */
 	public int composeFalseAnswer() {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		Random randomObj = new Random();
+		int candidateValue = 0;
+		
+		do { 
+		
+			candidateValue = roundOff(randomObj.nextInt(getMaxInRange()));
+			
+		} while (!isNicelyDistributed(candidateValue)); 
+	
+		return candidateValue;
+				
 	}
 
 	/**

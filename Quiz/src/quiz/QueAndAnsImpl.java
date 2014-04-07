@@ -22,10 +22,18 @@ public class QueAndAnsImpl implements QueAndAns {
 		this.noOfAnswersPerQuestion = noOfAnswersPerQuestion;
 		que_AnsList	= new int[2+noOfAnswersPerQuestion];
 		database = new QuizDatabaseImpl();
+		generateQueAndAnsList();
 		
 	}
 	
 	public QueAndAnsImpl(){}
+
+	@Override
+	public int[] getQue_AnsList() {
+
+		return que_AnsList;
+	
+	}
 
 	@Override
 	public int getQuestionListIndex() {
@@ -54,9 +62,7 @@ public class QueAndAnsImpl implements QueAndAns {
 		this.countryListIndex = countryListIndex;
 		
 	}
-	
 
-	
 	@Override
 	public void generateQueAndAnsList() {
 
@@ -228,12 +234,12 @@ public class QueAndAnsImpl implements QueAndAns {
 		
 		return range;
 	}
-
+	
 	@Override
-	public int[] getQue_AnsList() {
-
-		return que_AnsList;
+	public String toString() {
+	
+		return "" + database.getQuestion(que_AnsList[0]) + database.getCountry(que_AnsList[1]);
 	
 	}
-
+	
 }

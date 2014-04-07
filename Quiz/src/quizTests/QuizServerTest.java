@@ -105,11 +105,27 @@ public class QuizServerTest {
 	 }
 	
 	 @Test
-	public void testMakeListOfQAndALists() {
+	public void testMakeListOfQAndALists() throws RemoteException {
 		
-/*		int actualValue2 = serverObj.listOfQAndALists.length;//visibility needs to be temporarily made public for test.
-		int expectedValue2 = 7;	
-*/
+		serverObj = new QuizServer(10,4);
+		serverObj.makeListOfQAndALists();
+		boolean listOfListsFilledUp = true;
+		
+		for (int i = 0; i < serverObj.getListOfQAndALists().length; i++) {
+			
+			System.out.println(serverObj.getListOfQAndALists()[i]);
+	
+			if (serverObj.getListOfQAndALists()[i] == null) {
+				
+				listOfListsFilledUp = false;
+				break;
+				
+			}
+			
+		}
+
+		assertTrue(listOfListsFilledUp);
+
 	}
 	
 	/**

@@ -11,12 +11,14 @@ import quiz.QueAndAnsImpl;
 public class QueAndAnsTest {
 
 	QueAndAnsImpl qAObj; 
+	int noAnsPerQue;
 	
 	@Before
 	public void setUp() throws Exception {
 	
-		qAObj = new QueAndAnsImpl();
-	
+		noAnsPerQue = 4;
+		qAObj = new QueAndAnsImpl(noAnsPerQue);
+		
 	}
 
 	@After
@@ -50,8 +52,8 @@ public class QueAndAnsTest {
 		
 		}
 		
-		boolean actualAnswer = !emptyCellInArray;
-		boolean expectedAnswer = true;
+		boolean actualAnswer = emptyCellInArray;
+		boolean expectedAnswer = false;
 		assertEquals(expectedAnswer, actualAnswer);
 	
 	}
@@ -61,7 +63,7 @@ public class QueAndAnsTest {
 	 * (However it is not ideal as it is does not fail if no numbers
 	 * are generated, i.e. the index is a member field, so is always initialised to 0)
 	 * 
-	 * (needs to pass before test for calling method (testGenerateQueAndAnsList()))
+	 * (needs to pass before testing its calling method (testGenerateQueAndAnsList()))
 	 */
 	@Test
 	public void testGenerateQuestionIndices() {
@@ -97,23 +99,41 @@ public class QueAndAnsTest {
 	}
 
 	/**
-	 * test that needs to pass before test for calling methods 
+	 * needs to pass before testing its calling methods 
 	 * (isNicelyDistributed(int) & composeFalseAnswer()).
 	 */
 	@Test
 	public void testGetMaxInRange() {
-		
-		qAObj.getQue_AnsList()[0] = 0; // how many colours in flag
-		int actualAnswer = qAObj.getMaxInRange();
-		int expectedAnswer = 5;
 				
-		assertEquals(expectedAnswer, actualAnswer);
+		qAObj.setQuestionListIndex(0);// how many colours in flag
+		int actualAnswer1 = qAObj.getMaxInRange();
+		int expectedAnswer1 = 5;
+
+		qAObj.setQuestionListIndex(1);// how far from here to there
+		int actualAnswer2 = qAObj.getMaxInRange();
+		int expectedAnswer2 = 10000;
+
+		qAObj.setQuestionListIndex(2);// how high is highest peak
+		int actualAnswer3 = qAObj.getMaxInRange();
+		int expectedAnswer3 = 8000;
+
+		assertEquals(expectedAnswer1, actualAnswer1);
+		assertEquals(expectedAnswer2, actualAnswer2);
+		assertEquals(expectedAnswer3, actualAnswer3);
 		
 	}
 
+	@Test (expected = IllegalArgumentException.class)
+	public void testIllegalArgumentException() {
+		
+		qAObj.setQuestionListIndex(3);// not in range		
+	    qAObj.getMaxInRange();
+	
+	}
+	
 	/**
-	 * together with testRoundOff(), needs to pass before test
-	 * for calling method (composeFalseAnswer()).
+	 * needs to pass (together with testRoundOff()) before testing
+	 * its calling method (composeFalseAnswer()).
 	 */
 	@Test
 	public void testIsNicelyDistributed() {
@@ -121,15 +141,15 @@ public class QueAndAnsTest {
 		qAObj.getQue_AnsList()[2] = 2000;
 		qAObj.getQue_AnsList()[3] = 3100;
 		qAObj.getQue_AnsList()[4] = 4200;
-		boolean actualAnswer = qAObj.isNicelyDistributed(3500);
-		boolean expectedAnswer = false;
+		boolean actualAnswer1 = qAObj.isNicelyDistributed(3500);
+		boolean expectedAnswer1 = false;
 		boolean actualAnswer2 = qAObj.isNicelyDistributed(5500);				
 		boolean expectedAnswer2 = true;
 		boolean actualAnswer3 = qAObj.isNicelyDistributed(7500);				
 		boolean expectedAnswer3 = true;
 		boolean actualAnswer4 = qAObj.isNicelyDistributed(10001);				
 		boolean expectedAnswer4 = false;
-		assertEquals(expectedAnswer, actualAnswer);
+		assertEquals(expectedAnswer1, actualAnswer1);
 		assertEquals(expectedAnswer2, actualAnswer2);
 		assertEquals(expectedAnswer3, actualAnswer3);
 		assertEquals(expectedAnswer4, actualAnswer4);
@@ -137,9 +157,8 @@ public class QueAndAnsTest {
 	}
 			
 	/**
-	 * together with testIsNicelyDistributed(), needs to pass before test
-	 * for calling method (composeFalseAnswer()).
-	 * 
+	 * needs to pass (together with testIsNicelyDistributed()) before testing
+	 * its calling method (composeFalseAnswer()).
 	 */
 	@Test
 	public void testRoundOff() {
@@ -159,22 +178,44 @@ public class QueAndAnsTest {
 	}
 	
 	/**
-	 * needs to pass before test for calling method (testGenerateQueAndAnsList())
+	 * needs to pass before testing its calling method (testGenerateQueAndAnsList())
 	 */
 	@Test
 	public void testComposeFalseAnswer() {
 		
-		qAObj.getQue_AnsList()[0] = 2;
-		int randomFalseAnswer = qAObj.composeFalseAnswer();
-		boolean aValidFalseAnswer = true;
+		qAObj.getQue_AnsList()[0] = 0;
+		int randomFalseAnswer1 = qAObj.composeFalseAnswer();
+		boolean aValidFalseAnswer1 = true;
 		
-		if (randomFalseAnswer < 800 || randomFalseAnswer > 8000) {
+		if (randomFalseAnswer1 < 0 || randomFalseAnswer1 > 5) {
 			
-			aValidFalseAnswer = false;
+			aValidFalseAnswer1 = false;
 			
 		}
-	
-		assertTrue(aValidFalseAnswer);
+		
+		qAObj.getQue_AnsList()[0] = 1;
+		int randomFalseAnswer2 = qAObj.composeFalseAnswer();
+		boolean aValidFalseAnswer2 = true;
+		
+		if (randomFalseAnswer2 < 1000 || randomFalseAnswer2 > 10000) {
+			
+			aValidFalseAnswer2 = false;
+			
+		}
+		
+		qAObj.getQue_AnsList()[0] = 2;
+		int randomFalseAnswer3 = qAObj.composeFalseAnswer();
+		boolean aValidFalseAnswer3 = true;
+		
+		if (randomFalseAnswer3 < 800 || randomFalseAnswer3 > 8000) {
+			
+			aValidFalseAnswer3 = false;
+			
+		}
+
+		assertTrue(aValidFalseAnswer1);
+		assertTrue(aValidFalseAnswer2);
+		assertTrue(aValidFalseAnswer3);
 
 	}
 	

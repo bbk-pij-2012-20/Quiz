@@ -1,5 +1,7 @@
 package quiz;
 
+import java.util.IllegalFormatException;
+
 public class QueAndAnsImpl implements QueAndAns {
 
 	private int	questionListIndex;
@@ -115,8 +117,35 @@ public class QueAndAnsImpl implements QueAndAns {
 	 * (temporarily made public for JUnit test)  
 	 */
 	public boolean isNicelyDistributed(int candidateValue) {
-		// TODO Auto-generated method stub
-		return false;
+	
+		boolean nicelyDistributed = true;
+		
+		for (int i = 2; i < que_AnsList.length; i++) {
+						
+			if (candidateValue > que_AnsList[i]) {
+			
+				if (candidateValue < que_AnsList[i] + getMaxInRange()/10) {
+				
+					nicelyDistributed = false;
+				
+				}
+				
+			} else if (candidateValue <= que_AnsList[i]) {
+			
+				if (candidateValue > que_AnsList[i] - getMaxInRange()/10) {
+				
+					nicelyDistributed = false;
+				
+				}			
+			
+			}
+			
+		}
+
+		int minInRange = getMaxInRange()/10 + 1;
+
+		return (nicelyDistributed && (candidateValue >= minInRange) && (candidateValue <= getMaxInRange()));		
+		
 	}
 
 	/**
@@ -126,7 +155,7 @@ public class QueAndAnsImpl implements QueAndAns {
 	 * 
 	 * (temporarily made public for JUnit test)  
 	 */
-	public int getMaxInRange() {
+	public int getMaxInRange() throws IllegalFormatException {
 		
 		int range = 0;
 		
@@ -143,7 +172,8 @@ public class QueAndAnsImpl implements QueAndAns {
 			
 				case 0: range = 5; break; // no. colours in flag 
 				case 1: range = 10000; break; // distance from here
-				default: range = 8000; break; //highest peak above sea level
+				case 2: range = 8000; break; //highest peak above sea level
+				default: throw new NumberFormatException("the questionListIndex value is not a number"); 
 			
 			}
 			

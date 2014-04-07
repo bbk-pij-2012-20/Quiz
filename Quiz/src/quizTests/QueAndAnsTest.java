@@ -68,33 +68,39 @@ public class QueAndAnsTest {
 	@Test
 	public void testGenerateQuestionIndices() {
 		
-		qAObj.generateQuestionIndices(0);
-		boolean actualAnswer = true;
+		boolean actualAnswer1 = true;
+		boolean actualAnswer2 = true;
 		
 		for (int i = 0; i < 20; i++) {
-			System.out.println("qAObj.getQuestionListIndex()"+qAObj.getQuestionListIndex());
+			
+			qAObj.generateQuestionIndices(0);
+			
+			System.out.println("qLI: "+qAObj.getQuestionListIndex());
 		
 			if (	qAObj.getQuestionListIndex() > 2 || qAObj.getQuestionListIndex() < 0) {
 			
-				actualAnswer = false;
-				System.out.println("qAObj.getQuestionListIndex()"+qAObj.getQuestionListIndex());
+				actualAnswer1 = false;
+				break;
 			}
 		
 		}
 
-		qAObj.generateQuestionIndices(1);
-
 		for (int i = 0; i < 20; i++) {
-			System.out.println("qAObj.getCountryListIndex()"+qAObj.getCountryListIndex());			
+
+			qAObj.generateQuestionIndices(1);
+
+			System.out.println("cLI: "+qAObj.getCountryListIndex());			
 			
 			if (	qAObj.getCountryListIndex() > 9 || qAObj.getCountryListIndex() < 0) {
 			
-				actualAnswer = false;
+				actualAnswer2 = false;
+				break;
 			}
 		
 		}
 
-		assertTrue(actualAnswer);
+		assertTrue(actualAnswer1);
+		assertTrue(actualAnswer2);
 		
 	}
 

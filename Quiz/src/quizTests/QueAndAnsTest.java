@@ -138,6 +138,7 @@ public class QueAndAnsTest {
 	@Test
 	public void testIsNicelyDistributed() {
 		
+		qAObj.setQuestionListIndex(1);
 		qAObj.getQue_AnsList()[2] = 2000;
 		qAObj.getQue_AnsList()[3] = 3100;
 		qAObj.getQue_AnsList()[4] = 4200;

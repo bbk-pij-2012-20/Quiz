@@ -42,9 +42,11 @@ public class QueAndAnsTest {
 		boolean emptyCellInArray = false;
 		
 		for (int i=0; i<qAObj.getQue_AnsList().length; i++) {
+		
+			System.out.println("qAList: "+qAObj.getQue_AnsList()[i]);
 			
 			if (qAObj.getQue_AnsList()[i] == 0) {
-				
+		
 				emptyCellInArray = true;
 				break;
 			
@@ -52,9 +54,7 @@ public class QueAndAnsTest {
 		
 		}
 		
-		boolean actualAnswer = emptyCellInArray;
-		boolean expectedAnswer = false;
-		assertEquals(expectedAnswer, actualAnswer);
+		assertFalse(emptyCellInArray);
 	
 	}
 

@@ -12,6 +12,17 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 	private int noOfAnswersPerQuestion;
 	private QueAndAns[] listOfQAndALists;
 
+	/**
+	 * getter for score (primarily for JUnit)
+	 * 
+	 * @return int   the score
+	 * @throws RemoteException
+	 */
+	public int getScore() throws RemoteException {
+		
+		return score;
+		
+	}
 	
 	public QuizServer() throws RemoteException {
 		// TODO Auto-generated constructor stub
@@ -128,8 +139,9 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 	}
 	
 	/**
-	 * Randomly finds a new position for the correct answer (originally at position 2 in the que_AnsList), 
-	 * just prior to be output to playerClient. It is called from playQuiz() only. 
+	 * Generates a new position for the correct answer (originally at position 2 in the que_AnsList), 
+	 * by random and immediately prior to being output to playerClient UI. It is only called from 
+	 * playQuiz(). 
 	 *  
 	 * @param questionNo   an int position of the current que_AnsList held in the listOfQAndALists 
 	 * @return             an int new position of the correct answer in the current que_AndAnsList.
@@ -162,5 +174,23 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 	 */
 	public void keepScore(String userInputStr, int correctAnswer, int newCorrectAnswerIndex) {
 	
+		int userInput = 0;
+		
+		try {
+
+			userInput = Integer.parseInt(userInputStr);
+				
+		} catch (NumberFormatException e) {
+			
+			System.out.println("A numeric input was required");
+		
+		}
+		
+		if (userInput == correctAnswer || userInput == newCorrectAnswerIndex) {
+			
+				score++; 
+		
+		}
+		
 	}
 }

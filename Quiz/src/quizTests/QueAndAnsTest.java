@@ -27,6 +27,25 @@ public class QueAndAnsTest {
 		qAObj = null;
 		
 	}
+	
+	/**
+	 * to confirm instantiation of QueAndAns is working, as this
+	 * constructor will be called from QuizServer's makeListOfQueAndAnsList().
+	 */
+	@Test
+	public void testConstructor() {
+		
+		qAObj = null;
+		assertTrue(qAObj == null);
+		
+		int noOfAnswersPerQuestion = 4;
+		qAObj = new QueAndAnsImpl(noOfAnswersPerQuestion);
+		
+		int actualAnswer = qAObj.getQue_AnsList().length;
+		int expectedAnswer = 6;
+		assertEquals(expectedAnswer, actualAnswer);
+		
+	}
 
 	/**
 	 * Should only be tested after tests for methods that are called 

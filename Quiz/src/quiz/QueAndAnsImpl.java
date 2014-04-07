@@ -101,8 +101,18 @@ public class QueAndAnsImpl implements QueAndAns {
 	 * (temporarily made public for JUnit test)  
 	 */
 	public int roundOff(int candidateValue){
-		//TODO
-		return 1;
+			
+		if (candidateValue > 100) {
+			
+			candidateValue = candidateValue / 100 * 100;
+			
+		} else if (candidateValue > 10) {
+			
+			candidateValue = candidateValue / 10 * 10;
+		
+		}
+
+		return candidateValue; 
 		
 	}
 	

@@ -72,10 +72,18 @@ public class QuizDatabaseTest {
 	@Test
 	public void testGetAnswer() {
 		
-		int actualAnswer = dbObj.getAnswer(9,2);
-		int expectedAnswer = 3500;
-		assertEquals(expectedAnswer, actualAnswer);
-	
+		int actualAnswer1 = dbObj.getAnswer(2,9);
+		int expectedAnswer1 = 3500;
+		assertEquals(expectedAnswer1, actualAnswer1);
+
+		int actualAnswer2 = dbObj.getAnswer(1,6);
+		int expectedAnswer2 = 7000;
+		assertEquals(expectedAnswer2, actualAnswer2);
+
+		int actualAnswer3 = dbObj.getAnswer(0,3);
+		int expectedAnswer3 = 3;
+		assertEquals(expectedAnswer3, actualAnswer3);
+
 	}
 
 }

@@ -139,5 +139,60 @@ public class QuizServerTest {
 
 	}
 	
+	/**
+	 * random number ranging 0-3 to be added to position of correct answer.
+	 * Therefore, without using shuffleAnswers(int), there is 1 in 4 chance 
+	 * the correct answer will remain at index position 2 in a que_AnsList,
+	 * so 1 in 4 chance that new position index returned from shuffleAnswers(int)
+	 * will be 2. Test passes if shuffleAnswers(int) returns anything other than 
+	 * 2 when tested 10 times.
+	 * @throws RemoteException 
+	 */
+	@Test
+	public void testShuffleAnswers() throws RemoteException {
+		
+		int noOfAnsPerQue = 4;
+		QueAndAnsImpl qAAObj1 = new QueAndAnsImpl(noOfAnsPerQue);
+		qAAObj1.getQue_AnsList()[2] = 1000;// correct answer
+		qAAObj1.getQue_AnsList()[3] = 10;
+		qAAObj1.getQue_AnsList()[4] = 20;
+		qAAObj1.getQue_AnsList()[5] = 30;
+		QueAndAns[] listOfLists = new QueAndAns[10];
+		listOfLists[0] = qAAObj1;
+		serverObj.setListOfQAndALists(listOfLists);
+		boolean shuffledCorrectAnswer = false;
+		
+		for (int i = 0; i < 10; i++) {
+			
+			if (serverObj.shuffleAnswers(0) != 2) {
+				
+				shuffledCorrectAnswer = true;
+				break;
+				
+			}
+			
+		}
+		
+		for (int i = 0; i < qAAObj1.getQue_AnsList().length; i++) {
+			
+			System.out.println(qAAObj1.getQue_AnsList()[i]);
+			
+		}
+		
+		assertTrue(shuffledCorrectAnswer);
+
+	}
+	
+	@Test
+	public void testKeepScore() {
+		
+	}
+	
+	@Test
+	public void testStartGame() {
+		
+		
+	}
+	
 }
 

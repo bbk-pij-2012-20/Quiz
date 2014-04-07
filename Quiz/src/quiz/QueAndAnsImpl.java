@@ -7,6 +7,21 @@ public class QueAndAnsImpl implements QueAndAns {
 	private QuizDatabase database;
 	private int noOfAnswersPerQuestion;
 	private int[] que_AnsList;
+	
+	/**
+	 * Constructor takes a number of answers per question, to be specified
+	 * by the setUpClient.
+	 * 
+	 * @param noOfAnswersPerQuestion
+	 */
+	public QueAndAnsImpl(int noOfAnswersPerQuestion) {
+		
+		this.noOfAnswersPerQuestion = noOfAnswersPerQuestion;
+		que_AnsList	= new int[2+noOfAnswersPerQuestion];
+		
+	}
+	
+	public QueAndAnsImpl(){}
 
 	@Override
 	public int getQuestionListIndex() {
@@ -22,20 +37,20 @@ public class QueAndAnsImpl implements QueAndAns {
 		
 	}
 	
-	/**
-	 * Creates QueAndAns object a number of answers per question, specified
-	 * by the setUpClient.
-	 * 
-	 * @param noOfAnswersPerQuestion
-	 */
-	public QueAndAnsImpl(int noOfAnswersPerQuestion) {
+	@Override
+	public void setQuestionListIndex(int questionListIndex) {
 		
-		this.noOfAnswersPerQuestion = noOfAnswersPerQuestion;
-		que_AnsList	= new int[2+noOfAnswersPerQuestion];
+		this.questionListIndex = questionListIndex;
 		
 	}
 	
-	public QueAndAnsImpl(){}
+	@Override
+	public void setCountryListIndex(int countryListIndex) {
+		
+		this.countryListIndex = countryListIndex;
+		
+	}
+	
 
 	
 	@Override
@@ -112,14 +127,40 @@ public class QueAndAnsImpl implements QueAndAns {
 	 * (temporarily made public for JUnit test)  
 	 */
 	public int getMaxInRange() {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		int range = 0;
+		
+		try {
+		
+			if (questionListIndex < 0 || questionListIndex > 2) {
+			
+				System.out.println("questionListIndex is out of expected range (0-2): "+questionListIndex);
+				throw new IllegalArgumentException();
+			
+			}
+			
+			switch (questionListIndex) {
+			
+				case 0: range = 5; break; // no. colours in flag 
+				case 1: range = 10000; break; // distance from here
+				default: range = 8000; break; //highest peak above sea level
+			
+			}
+			
+		} catch (IllegalArgumentException e) {
+			
+			e.printStackTrace();				
+			
+		}
+		
+		return range;
 	}
 
 	@Override
 	public int[] getQue_AnsList() {
-		// TODO Auto-generated method stub
-		return null;
+
+		return que_AnsList;
+	
 	}
 
 }

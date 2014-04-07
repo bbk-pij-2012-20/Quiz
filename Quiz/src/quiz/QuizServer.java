@@ -11,13 +11,33 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 	private int noOfAnswersPerQuestion;
 	private QueAndAns[] listOfQAndALists;
 
+	
 	public QuizServer() throws RemoteException {
-		super();
 		// TODO Auto-generated constructor stub
 	}
 
+	public QuizServer(int totalNoOfQuestions, int noOfAnswersPerQuestion) throws RemoteException {
+
+		this.totalNoOfQuestions = totalNoOfQuestions;
+		this.noOfAnswersPerQuestion = noOfAnswersPerQuestion;
+	
+	}
+
 	@Override
-	public void setUpQuiz(int numberOfQuestions, int numberOfAnswersPeryumchastions) throws RemoteException {
+	public QueAndAns[] getListOfQAndALists() throws RemoteException{
+		
+		return listOfQAndALists;
+		
+	}
+	
+	@Override
+	public void setListOfQAndALists(QueAndAns[] listOfQAndALists) throws RemoteException{
+		
+		this.listOfQAndALists = listOfQAndALists;
+		
+	}
+	@Override
+	public void setUpQuiz(int numberOfQuestions, int numberOfAnswersPerQuestion) throws RemoteException {
 		// TODO Auto-generated method stub
 
 	}
@@ -42,9 +62,27 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 	/**
 	 * Fills the listOfQueAndAnsLists with que_AndLists with as many as the setUpClient has specified. 
 	 * Assures no repeated questions by calling isRepeatedQuestion(QueAndAns, int). 
+	 * 
+	 * (temporarily made public for JUnit test)
 	 */
-	private void makeListOfQAndALists() {
-		//TODO
+	public void makeListOfQAndALists() {
+	
+		listOfQAndALists = new QueAndAns[totalNoOfQuestions];
+		QueAndAnsImpl queAndAnsObj;
+
+		for (int i = 0; i < listOfQAndALists.length; i++) {
+		
+			queAndAnsObj = new QueAndAnsImpl(noOfAnswersPerQuestion);
+			listOfQAndALists[i] = queAndAnsObj;			
+				
+			if (isRepeatedQuestion(queAndAnsObj, i)) {
+			
+				i--;
+				
+			}
+				
+		}
+		
 	}
 	
 	
@@ -52,11 +90,40 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 	 * @param queAndAnsObj            a queAndAnsObj, created and passed from makeListOfQAndALists()
 	 * @param listOfQAndAListsIndex   an int that is the position of the current queAndAnsObj created and passed from makeListOfQAndALists()  
 	 * @return                        true if the question was already created and stored at another position in the listOfQAndALists
+	 * 
+	 * (temporarily made public for JUnit test)  
 	 */
-	private boolean isRepeatedQuestion(QueAndAns queAndAnsObj, int listOfQAndAListsIndex) {
+	public boolean isRepeatedQuestion(QueAndAnsImpl queAndAnsObj, int listOfQAndAListsIndex) {
+	
+		boolean same = false;
+		int i = 0;
 		
-		//TODO
-		return true;
+		while (!same && i < listOfQAndAListsIndex) {
+			
+			if (queAndAnsObj.getQue_AnsList()[0] == listOfQAndALists[i].getQue_AnsList()[0]) {
+
+				if (queAndAnsObj.getQue_AnsList()[1] == listOfQAndALists[i].getQue_AnsList()[1]) {
+				
+					same = true;
+					
+				} else {
+				
+					i++;
+					continue;
+				
+				}
+									
+			} else {
+				
+				i++;
+				continue;
+				
+			}
+			
+		}
+		
+		return same;
+
 	}
 	
 	/**

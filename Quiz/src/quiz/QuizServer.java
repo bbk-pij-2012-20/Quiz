@@ -23,10 +23,11 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 		return score;
 		
 	}
-	
-	public QuizServer() throws RemoteException {
-		// TODO Auto-generated constructor stub
-	}
+	/**
+	 * empty constructor must be explicitly written for RMI
+	 * @throws RemoteException
+	 */
+	public QuizServer() throws RemoteException {}
 
 	public QuizServer(int totalNoOfQuestions, int noOfAnswersPerQuestion) throws RemoteException {
 
@@ -56,8 +57,47 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 
 	@Override
 	public void playQuiz() throws RemoteException {
-		// TODO Auto-generated method stub
+	
+		System.out.println("------------------- NEW GAME -------------------\n"); 		
+		System.out.println("There are " + totalNoOfQuestions + " questions to answer. "); 
+		System.out.println("Select one of the " + noOfAnswersPerQuestion + " answers\n");  
+		System.out.println("------------------------------------------------"); 		
+		
+		if (startGame()) {
+			
+			makeListOfQAndALists();
+		
+		} else {
+			
+			System.exit(0);
+		
+		}
+		
+		final int ORIGINAL_CORRECT_ANSWER_INDEX = 2;
+		int correctAnswer = 0;
+		int answerCounter = 0;
+		int userInput = 0;
+		int newCorrectAnswerIndex = 0;
+		
+		for (int questionNo = 0; questionNo < totalNoOfQuestions; questionNo++) {
 
+			System.out.println("Question#" + questionNo + 1 +":");
+			System.out.println(listOfQAndALists[questionNo].toString());
+			correctAnswer = listOfQAndALists[questionNo].getQue_AnsList()[ORIGINAL_CORRECT_ANSWER_INDEX];
+			System.out.println("Pick one: ");
+		 	
+		 	newCorrectAnswerIndex = shuffleAnswers(questionNo);
+
+			for (int answerNo = 0; answerNo < noOfAnswersPerQuestion; answerNo++) {
+			
+				System.out.println(answerNo + 1 + ".  " + listOfQAndALists[questionNo].getQue_AnsList()[answerNo]);
+				
+			}
+			
+			keepScore(System.console().readLine(), correctAnswer, newCorrectAnswerIndex);
+		
+		}
+			
 	}
 	
 	/**
@@ -65,10 +105,34 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 	 * Input y resumes with playQuiz(), otherwise terminates program.
 	 * 
 	 * @return    true if user enters any word beginning with y.
+	 * 
+	 * (temporarily made public for JUnit test)
 	 */
-	private boolean startGame() {
-		//TODO
-		return true;
+	public boolean startGame() {
+		
+		boolean start = false;
+		
+		System.out.println("Do you want to set up a new quiz game? (y/n)");
+		char input = System.console().readLine().trim().toLowerCase().charAt(0);
+		
+		if (input == 'y') {
+		
+			start = true;
+		
+		} else if (input == 'n') {
+		
+			System.out.println("goodbye");
+			start = false;	
+		
+		} else { 
+		
+			System.out.println("that was neither y or n. Try again");
+			startGame();		
+		
+		}
+		
+		return start;
+
 	}
 	
 	/**

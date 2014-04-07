@@ -187,36 +187,63 @@ public class QueAndAnsTest {
 	@Test
 	public void testComposeFalseAnswer() {
 		
-		qAObj.getQue_AnsList()[0] = 0;
-		int randomFalseAnswer1 = qAObj.composeFalseAnswer();
+		qAObj.setQuestionListIndex(0);//colours in flag (1-5)
 		boolean aValidFalseAnswer1 = true;
+		int randomFalseAnswer1 = 0;
 		
-		if (randomFalseAnswer1 < 0 || randomFalseAnswer1 > 5) {
-			
-			aValidFalseAnswer1 = false;
-			
-		}
-		
-		qAObj.getQue_AnsList()[0] = 1;
-		int randomFalseAnswer2 = qAObj.composeFalseAnswer();
-		boolean aValidFalseAnswer2 = true;
-		
-		if (randomFalseAnswer2 < 1000 || randomFalseAnswer2 > 10000) {
-			
-			aValidFalseAnswer2 = false;
-			
-		}
-		
-		qAObj.getQue_AnsList()[0] = 2;
-		int randomFalseAnswer3 = qAObj.composeFalseAnswer();
-		boolean aValidFalseAnswer3 = true;
-		
-		if (randomFalseAnswer3 < 800 || randomFalseAnswer3 > 8000) {
-			
-			aValidFalseAnswer3 = false;
-			
-		}
+		for (int i = 0; i < 20; i++) {
+	
+			randomFalseAnswer1 = qAObj.composeFalseAnswer();	
+			System.out.println("ans1: "+randomFalseAnswer1);
 
+			if (randomFalseAnswer1 < 0 || randomFalseAnswer1 > 5) {
+			
+				aValidFalseAnswer1 = false;
+				break;
+			
+			}
+		
+		}
+		
+		qAObj.setQuestionListIndex(1);//distance (1000-10000)
+		boolean aValidFalseAnswer2 = true;
+		int randomFalseAnswer2 = 0;
+
+		for (int i = 0; i < 20; i++) {
+	
+			randomFalseAnswer2 = qAObj.composeFalseAnswer();	
+			System.out.println("ans2: "+randomFalseAnswer2);
+
+			if (randomFalseAnswer2 < 1000 || randomFalseAnswer2 > 10000) {
+			
+				aValidFalseAnswer2 = false;
+				break;
+			
+			}
+	
+		}
+		
+		qAObj.setQuestionListIndex(2); //highest peak (800-8000)
+		boolean aValidFalseAnswer3 = true;
+		int randomFalseAnswer3 = 0;
+
+		for (int i = 0; i < 20; i++) {
+			
+			randomFalseAnswer3 = qAObj.composeFalseAnswer();
+			System.out.println("ans3: "+randomFalseAnswer3);
+					
+			if (randomFalseAnswer3 < 800 || randomFalseAnswer3 > 8000) {
+			
+				aValidFalseAnswer3 = false;
+				break;
+			
+			}
+			
+		}
+		
+		System.out.println("ans1: "+randomFalseAnswer1);
+		System.out.println("ans2: "+randomFalseAnswer2);
+		System.out.println("ans3: "+randomFalseAnswer3);
 		assertTrue(aValidFalseAnswer1);
 		assertTrue(aValidFalseAnswer2);
 		assertTrue(aValidFalseAnswer3);

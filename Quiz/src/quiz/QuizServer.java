@@ -2,6 +2,7 @@ package quiz;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Random;
 import java.io.Serializable;
 
 public class QuizServer extends UnicastRemoteObject implements QuizService {
@@ -131,12 +132,22 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 	 * just prior to be output to playerClient. It is called from playQuiz() only. 
 	 *  
 	 * @param questionNo   an int position of the current que_AnsList held in the listOfQAndALists 
-	 * @return             an int new position of the correct answer in the current qua_AndAnsList.
+	 * @return             an int new position of the correct answer in the current que_AndAnsList.
+	 * 
+	 * (temporarily made public for JUnit test)  
 	 */
-	private int shuffleAnswers(int questionNo) {
-		//TODO
+	public int shuffleAnswers(int questionNo) {
 		
-		return 0; 
+		final int ORIGINAL_CORRECT_ANSWER_INDEX = 2;
+		Random randomObj = new Random();
+		int randomNewCorrectAnswerIndex = ORIGINAL_CORRECT_ANSWER_INDEX + randomObj.nextInt(4);
+
+		int temp = listOfQAndALists[questionNo].getQue_AnsList()[randomNewCorrectAnswerIndex];
+		listOfQAndALists[questionNo].getQue_AnsList()[randomNewCorrectAnswerIndex] = listOfQAndALists[questionNo].getQue_AnsList()[ORIGINAL_CORRECT_ANSWER_INDEX];
+		listOfQAndALists[questionNo].getQue_AnsList()[ORIGINAL_CORRECT_ANSWER_INDEX] = temp;
+	
+		return randomNewCorrectAnswerIndex;
+		
 	}
 	
 	/**
@@ -146,8 +157,10 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 	 * @param userInputStr            the input from the playerClient
 	 * @param correctAnswer           the correct answer value
 	 * @param newCorrectAnswerIndex   the position of the correct answer after calling shuffleAnswers()
+	 * 
+	 * (temporarily made public for JUnit test)  
 	 */
-	private void keepScore(String userInputStr, int correctAnswer, int newCorrectAnswerIndex) {
+	public void keepScore(String userInputStr, int correctAnswer, int newCorrectAnswerIndex) {
 	
 	}
 }

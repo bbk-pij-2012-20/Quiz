@@ -22,8 +22,33 @@ public class QuizDatabaseTest {
 
 	@After
 	public void tearDown() throws Exception {
+	
+		dbObj = null;
+	
 	}
 
+	/**
+	 * to confirm QuizDatabase instantiation is working (as this	and getAnswer(int,int) 
+	 * as well as QueAndAns's generatQuestionIndices(int) and composeFalseAnswer()
+	 * will be called by QueAndAns's generateQueAndAnsList()).
+	 * 
+	 * If the constructor is not successfully called, the fields will remain with the
+	 * value == 0. 
+	 */
+	@Test
+	public void testConstructor() {
+	
+		dbObj = null;
+		assertTrue(dbObj == null);
+				
+		dbObj = new QuizDatabaseImpl();
+		
+		int actualAnswer = dbObj.getQuestionListLength();
+		int expectedAnswer = 3;
+		
+		assertEquals(expectedAnswer, actualAnswer);
+
+	}
 	@Test
 	public void testGetQuestion() {
 		
@@ -39,7 +64,6 @@ public class QuizDatabaseTest {
 	public void testGetCountry() {
 		
 		String actualAnswer = dbObj.getCountry(8);
-		String wrongAnswer = "Lesotho?";
 		String expectedAnswer = "Kazakhstan?";
 		assertEquals(expectedAnswer, actualAnswer);
 		
@@ -47,7 +71,11 @@ public class QuizDatabaseTest {
 
 	@Test
 	public void testGetAnswer() {
-		fail("Not yet implemented");
+		
+		int actualAnswer = dbObj.getAnswer(9,2);
+		int expectedAnswer = 3500;
+		assertEquals(expectedAnswer, actualAnswer);
+	
 	}
 
 }

@@ -184,8 +184,34 @@ public class QuizServerTest {
 	}
 	
 	@Test
-	public void testKeepScore() {
+	public void testKeepScore() throws RemoteException {
 		
+		String userInputStr1 = "1100";
+		String userInputStr2 = "1200";
+		String userInputStr3 = "3";
+		int correctAnswer = 1100;
+		int newCorrectAnswerIndex = 3;
+	
+		int actualOutput0 = serverObj.getScore();
+		int expectedOutput0 = 0;//prior to calling keepScore, score should be 0
+		assertEquals(expectedOutput0, actualOutput0);
+		
+		serverObj.keepScore(userInputStr1,correctAnswer,newCorrectAnswerIndex);
+		int actualOutput1 = serverObj.getScore();
+		int expectedOutput1 = 1;// 1100 is correct, so score should be incremented by 1
+		assertEquals(expectedOutput1,actualOutput1);
+		
+		serverObj.keepScore(userInputStr2,correctAnswer,newCorrectAnswerIndex);
+		int actualOutput2 = serverObj.getScore();
+		int expectedOutput2 = 1;// 1200 is wrong, so score should not be incremented
+		assertEquals(expectedOutput2,actualOutput2);
+
+		serverObj.keepScore(userInputStr3,correctAnswer,newCorrectAnswerIndex);
+		int actualOutput3 = serverObj.getScore();
+		int expectedOutput3 = 2;// 3 is the correct position of the correct answer, so score should be incremented by 1
+		assertEquals(expectedOutput3,actualOutput3);
+
+	
 	}
 	
 	@Test

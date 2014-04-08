@@ -94,7 +94,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 
 			for (int answerNo = 0; answerNo < noOfAnswersPerQuestion; answerNo++) {
 			
-				System.out.println(answerNo + 1 + ".  " + listOfQAndALists[questionNo].getQue_AnsList()[answerNo]);
+				System.out.println(answerNo + 1 + ".  " + listOfQAndALists[questionNo].getQue_AnsList()[answerNo+2]);
 				
 			}
 			

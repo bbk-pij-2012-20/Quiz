@@ -79,16 +79,13 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 		
 		}
 		
-		int correctAnswer = 0;
-		int answerCounter = 0;
-		int userInput = 0;
+		int noOfQuestionsAnswered = 0;
 		int newCorrectAnswerIndex = 0;
 		
 		for (int questionNo = 0; questionNo < totalNoOfQuestions; questionNo++) {
 
 			System.out.println("Question#" + questionNo + 1 +":");
 			System.out.println(listOfQAndALists[questionNo].toString());
-			correctAnswer = listOfQAndALists[questionNo].getQue_AnsList()[ORIGINAL_CORRECT_ANSWER_INDEX];
 			System.out.println("Pick one: ");
 		 	newCorrectAnswerIndex = shuffleAnswers(questionNo);
 
@@ -98,10 +95,16 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 				
 			}
 			
-			keepScore(System.console().readLine(), correctAnswer, newCorrectAnswerIndex);
-		
-		}
+			noOfQuestionsAnswered += keepScore(System.console().readLine(), newCorrectAnswerIndex);
 			
+		}
+		
+		if (noOfQuestionsAnswered == totalNoOfQuestions) {
+			
+			System.out.printf("You scored %d out of ",
+					
+		}
+					
 	}
 	
 	/**
@@ -231,18 +234,17 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 	
 	/**
 	 * Increments the score for every correct answer given by the playerClient. 
-	 * (Accepts both the answer number and the actual answer value).
+	 * (Only accepts the answer number from user, not the actual answer value).
 	 * 
 	 * @param userInputStr            the input from the playerClient
-	 * @param correctAnswer           the correct answer value
 	 * @param newCorrectAnswerIndex   the position of the correct answer after calling shuffleAnswers()
 	 * 
 	 * (temporarily made public for JUnit test)  
 	 */
-	public void keepScore(String userInputStr, int correctAnswer, int newCorrectAnswerIndex) throws RemoteException {
+	public int keepScore(String userInputStr, int newCorrectAnswerIndex) throws RemoteException {
 	
 		int userInput = 0;
-		
+	
 		try {
 
 			userInput = Integer.parseInt(userInputStr);
@@ -253,11 +255,16 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 		
 		}
 		
-		if (userInput == correctAnswer || userInput == newCorrectAnswerIndex) {
+		
+		if (userInput == newCorrectAnswerIndex) {
 			
 				score++; 
 		
 		}
+		
+		int numberOfQuestionsAnswered = 1;
+		
+		return numberOfQuestionsAnswered;
 		
 	}
 }

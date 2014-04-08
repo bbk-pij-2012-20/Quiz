@@ -161,23 +161,22 @@ public class QueAndAnsTest {
 	@Test
 	public void testIsNicelyDistributed() {
 		
-		qAObj.setQuestionListIndex(1);
-		qAObj.getQue_AnsList()[2] = 2000;
-		qAObj.getQue_AnsList()[3] = 3100;
-		qAObj.getQue_AnsList()[4] = 4200;
-		boolean actualAnswer1 = qAObj.isNicelyDistributed(3500);
-		boolean expectedAnswer1 = false;
-		boolean actualAnswer2 = qAObj.isNicelyDistributed(5500);				
-		boolean expectedAnswer2 = true;
-		boolean actualAnswer3 = qAObj.isNicelyDistributed(7500);				
-		boolean expectedAnswer3 = true;
-		boolean actualAnswer4 = qAObj.isNicelyDistributed(10001);				
-		boolean expectedAnswer4 = false;
-		assertEquals(expectedAnswer1, actualAnswer1);
-		assertEquals(expectedAnswer2, actualAnswer2);
-		assertEquals(expectedAnswer3, actualAnswer3);
-		assertEquals(expectedAnswer4, actualAnswer4);
+		qAObj.setQuestionListIndex(1);// qli=1 how far (min=1000 max=10000, +/- 1000)
+		qAObj.getQue_AnsList()[2] = 2000;// 1000-3000, so 3500 is allowed
+		qAObj.getQue_AnsList()[3] = 2600;// 1600-3600, so 3500 is not allowed.
+		qAObj.getQue_AnsList()[4] = 8000;// 7000-9000, so 3500 is allowed (but was already disallowed by prior value)
+		qAObj.getQue_AnsList()[5] = 0;
+		assertFalse(qAObj.isNicelyDistributed(3500));
+		assertTrue(qAObj.isNicelyDistributed(3700));
 		
+		qAObj.setQuestionListIndex(0);// qli=0 flag colours (min=1 max=5, +/- 1)
+		qAObj.getQue_AnsList()[2] = 2;// allowed
+		qAObj.getQue_AnsList()[3] = 3;// allowed.
+		qAObj.getQue_AnsList()[4] = 4;// allowed (but 3500 was already disallowed by prior 2 values)
+		qAObj.getQue_AnsList()[5] = 0;
+		assertTrue(qAObj.isNicelyDistributed(1));
+		assertTrue(qAObj.isNicelyDistributed(1));
+
 	}
 			
 	/**
@@ -271,6 +270,20 @@ public class QueAndAnsTest {
 		assertTrue(aValidFalseAnswer2);
 		assertTrue(aValidFalseAnswer3);
 
+	}
+	
+	@Test
+	public void testToString() {
+	
+		qAObj.getQue_AnsList()[0] = 1;
+		qAObj.getQue_AnsList()[1] = 2;
+				
+		String actualOutput = qAObj.toString();
+		String expectedOutput = "Roughly, how far (in km) is it from London to capital city of Bulgaria?";
+		
+		System.out.println("toString output: "+ actualOutput);
+		assertEquals(expectedOutput, actualOutput);
+	
 	}
 	
 }

@@ -18,7 +18,8 @@ public class QueAndAnsImpl implements QueAndAns {
 	 * @param noOfAnswersPerQuestion
 	 */
 	public QueAndAnsImpl(int noOfAnswersPerQuestion) {
-		
+//		System.out.println("constructor(int)");
+
 		this.noOfAnswersPerQuestion = noOfAnswersPerQuestion;
 		que_AnsList	= new int[2+noOfAnswersPerQuestion];
 		database = new QuizDatabaseImpl();
@@ -26,12 +27,22 @@ public class QueAndAnsImpl implements QueAndAns {
 		
 	}
 	
+	/**
+	 * empty constructor
+	 */
 	public QueAndAnsImpl(){}
 
 	@Override
 	public int[] getQue_AnsList() {
 
 		return que_AnsList;
+	
+	}
+	
+	@Override
+	public void setQue_AnsList(int[] que_AnsList) {
+
+		this.que_AnsList = que_AnsList;
 	
 	}
 
@@ -65,7 +76,7 @@ public class QueAndAnsImpl implements QueAndAns {
 
 	@Override
 	public void generateQueAndAnsList() {
-
+//		System.out.println("generateQueAndAnsList()");
 		generateQuestionIndices(0);
 		database = new QuizDatabaseImpl();
 		que_AnsList[0] = questionListIndex;
@@ -89,7 +100,7 @@ public class QueAndAnsImpl implements QueAndAns {
 	 * (temporarily made public for JUnit test)             
 	 */
 	public void generateQuestionIndices(int listIndex) {
-		
+//		System.out.println("generateQuestionIndices()");
 		Random randomObj = new Random();
 		
 		if (listIndex == 0) {
@@ -115,7 +126,7 @@ public class QueAndAnsImpl implements QueAndAns {
 	 * (temporarily made public for JUnit test)  
 	 */
 	public int composeFalseAnswer() {
-		
+//		System.out.println("composeFalseAnswer()");
 		Random randomObj = new Random();
 		int candidateValue = 0;
 		
@@ -140,7 +151,7 @@ public class QueAndAnsImpl implements QueAndAns {
 	 * (temporarily made public for JUnit test)  
 	 */
 	public int roundOff(int candidateValue){
-			
+//		System.out.println("roundOff()");		
 		if (candidateValue > 100) {
 			
 			candidateValue = candidateValue / 100 * 100;
@@ -166,15 +177,19 @@ public class QueAndAnsImpl implements QueAndAns {
 	 * (temporarily made public for JUnit test)  
 	 */
 	public boolean isNicelyDistributed(int candidateValue) {
-	
+//		System.out.println("isNicelyDistributed()");		
 		boolean nicelyDistributed = true;
 		
 		for (int i = 2; i < que_AnsList.length; i++) {
-						
-			if (candidateValue > que_AnsList[i]) {
-			
-				if (candidateValue < que_AnsList[i] + getMaxInRange()/10) {
+
+			if (candidateValue == que_AnsList[i]) {
 				
+				nicelyDistributed = false;
+				break;
+				
+			} else if (candidateValue > que_AnsList[i]) {
+		
+				if (candidateValue < que_AnsList[i] + getMaxInRange()/10) {
 					nicelyDistributed = false;
 				
 				}
@@ -192,7 +207,6 @@ public class QueAndAnsImpl implements QueAndAns {
 		}
 
 		int minInRange = getMaxInRange()/10 + 1;
-
 		return (nicelyDistributed && (candidateValue >= minInRange) && (candidateValue <= getMaxInRange()));		
 		
 	}
@@ -205,9 +219,8 @@ public class QueAndAnsImpl implements QueAndAns {
 	 * (temporarily made public for JUnit test)  
 	 */
 	public int getMaxInRange() throws IllegalFormatException {
-		
+//		System.out.println("getMaxInRange()");	
 		int range = 0;
-		
 		try {
 		
 			if (questionListIndex < 0 || questionListIndex > 2) {
@@ -233,6 +246,7 @@ public class QueAndAnsImpl implements QueAndAns {
 		}
 		
 		return range;
+		
 	}
 	
 	@Override

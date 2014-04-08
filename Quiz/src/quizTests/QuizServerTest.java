@@ -130,13 +130,15 @@ public class QuizServerTest {
 	
 	/**
 	 * playQuiz() will call print the userPrompt, call makeListOfQAndALists() 
+	 * @throws RemoteException 
 	 */
 	@Test
-	public void testPlayQuiz() {
+	public void testPlayQuiz() throws RemoteException {
 
-		//todo
-		//assertEquals(expectedValue, actualValue);
-
+		serverObj = new QuizServer(10,4);
+		serverObj.playQuiz();
+		
+		
 	}
 	
 	/**
@@ -186,38 +188,31 @@ public class QuizServerTest {
 	@Test
 	public void testKeepScore() throws RemoteException {
 		
-		String userInputStr1 = "1100";
-		String userInputStr2 = "1200";
-		String userInputStr3 = "3";
-		int correctAnswer = 1100;
+		String userInputStr1 = "1100";//correct value
+		String userInputStr2 = "3";// correct answer no. of correct value
 		int newCorrectAnswerIndex = 3;
 	
 		int actualOutput0 = serverObj.getScore();
 		int expectedOutput0 = 0;//prior to calling keepScore, score should be 0
 		assertEquals(expectedOutput0, actualOutput0);
 		
-		serverObj.keepScore(userInputStr1,correctAnswer,newCorrectAnswerIndex);
+		serverObj.keepScore(userInputStr1,newCorrectAnswerIndex);
 		int actualOutput1 = serverObj.getScore();
-		int expectedOutput1 = 1;// 1100 is correct, so score should be incremented by 1
+		int expectedOutput1 = 0;// although 1100 is correct answer value, it is not the correct answer no.
 		assertEquals(expectedOutput1,actualOutput1);
 		
-		serverObj.keepScore(userInputStr2,correctAnswer,newCorrectAnswerIndex);
+		serverObj.keepScore(userInputStr2,newCorrectAnswerIndex);
 		int actualOutput2 = serverObj.getScore();
-		int expectedOutput2 = 1;// 1200 is wrong, so score should not be incremented
+		int expectedOutput2 = 1;// 3 is the correct answer no. of the correct answer. Score incremented.
 		assertEquals(expectedOutput2,actualOutput2);
-
-		serverObj.keepScore(userInputStr3,correctAnswer,newCorrectAnswerIndex);
-		int actualOutput3 = serverObj.getScore();
-		int expectedOutput3 = 2;// 3 is the correct position of the correct answer, so score should be incremented by 1
-		assertEquals(expectedOutput3,actualOutput3);
-
-	
+		
 	}
 	
 	@Test
-	public void testStartGame() {
-		
-		
+	public void testStartGame() throws RemoteException {
+	
+		serverObj.startGame();
+	
 	}
 	
 }

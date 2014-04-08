@@ -11,6 +11,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 	private int totalNoOfQuestions; 
 	private int noOfAnswersPerQuestion;
 	private QueAndAns[] listOfQAndALists;
+	private final int ORIGINAL_CORRECT_ANSWER_INDEX = 2;
 
 	/**
 	 * getter for score (primarily for JUnit)
@@ -73,7 +74,6 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 		
 		}
 		
-		final int ORIGINAL_CORRECT_ANSWER_INDEX = 2;
 		int correctAnswer = 0;
 		int answerCounter = 0;
 		int userInput = 0;
@@ -85,7 +85,6 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 			System.out.println(listOfQAndALists[questionNo].toString());
 			correctAnswer = listOfQAndALists[questionNo].getQue_AnsList()[ORIGINAL_CORRECT_ANSWER_INDEX];
 			System.out.println("Pick one: ");
-		 	
 		 	newCorrectAnswerIndex = shuffleAnswers(questionNo);
 
 			for (int answerNo = 0; answerNo < noOfAnswersPerQuestion; answerNo++) {
@@ -108,7 +107,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 	 * 
 	 * (temporarily made public for JUnit test)
 	 */
-	public boolean startGame() {
+	public boolean startGame() throws RemoteException {
 		
 		boolean start = false;
 		
@@ -141,7 +140,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 	 * 
 	 * (temporarily made public for JUnit test)
 	 */
-	public void makeListOfQAndALists() {
+	public void makeListOfQAndALists() throws RemoteException {
 	
 		listOfQAndALists = new QueAndAns[totalNoOfQuestions];
 		QueAndAnsImpl queAndAnsObj;
@@ -169,7 +168,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 	 * 
 	 * (temporarily made public for JUnit test)  
 	 */
-	public boolean isRepeatedQuestion(QueAndAnsImpl queAndAnsObj, int listOfQAndAListsIndex) {
+	public boolean isRepeatedQuestion(QueAndAnsImpl queAndAnsObj, int listOfQAndAListsIndex) throws RemoteException {
 	
 		boolean same = false;
 		int i = 0;
@@ -212,9 +211,8 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 	 * 
 	 * (temporarily made public for JUnit test)  
 	 */
-	public int shuffleAnswers(int questionNo) {
+	public int shuffleAnswers(int questionNo) throws RemoteException{
 		
-		final int ORIGINAL_CORRECT_ANSWER_INDEX = 2;
 		Random randomObj = new Random();
 		int randomNewCorrectAnswerIndex = ORIGINAL_CORRECT_ANSWER_INDEX + randomObj.nextInt(4);
 
@@ -236,7 +234,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 	 * 
 	 * (temporarily made public for JUnit test)  
 	 */
-	public void keepScore(String userInputStr, int correctAnswer, int newCorrectAnswerIndex) {
+	public void keepScore(String userInputStr, int correctAnswer, int newCorrectAnswerIndex) throws RemoteException {
 	
 		int userInput = 0;
 		

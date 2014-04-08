@@ -64,10 +64,10 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 	@Override
 	public void playQuiz() throws RemoteException {
 	
-		System.out.println("------------------- NEW GAME -------------------\n"); 		
-		System.out.println("There are " + totalNoOfQuestions + " questions to answer. "); 
-		System.out.println("Select one of the " + noOfAnswersPerQuestion + " answers\n");  
-		System.out.println("------------------------------------------------"); 		
+		System.out.println("------------------- SHAHIN'S CRAZY NEW QUIZ CHALLENGE -------------------\n"); 		
+		System.out.println("                    There are " + totalNoOfQuestions + " questions to answer. "); 
+		System.out.println("                    Only one of the " + noOfAnswersPerQuestion + " answers is the correct one. \n");  
+		System.out.println("-------------------------------------------------------------------------"); 		
 		
 		if (startGame()) {
 			
@@ -84,10 +84,10 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 		
 		for (int questionNo = 0; questionNo < totalNoOfQuestions; questionNo++) {
 			
-			System.out.print("Question#");
-			System.out.println(questionNo + 1 +":");
+			System.out.print("\n\nQuestion#");
+			System.out.print(questionNo + 1 +": ");
 			System.out.println(listOfQAndALists[questionNo].toString());
-			System.out.println("Pick one: ");
+			System.out.println("\nPick one of the following: ");
 		 	newCorrectAnswerIndex = shuffleAnswers(questionNo);
 
 			for (int answerNo = 0; answerNo < noOfAnswersPerQuestion; answerNo++) {
@@ -96,14 +96,16 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 				
 			}
 			
-			String inputConsoleReadLine = System.console().readLine();
+//			String inputConsoleReadLine = System.console().readLine();
+			String inputConsoleReadLine = "1";
+
 			noOfQuestionsAnswered += keepScore(inputConsoleReadLine, newCorrectAnswerIndex);
 			
 		}
 		
 		if (noOfQuestionsAnswered == totalNoOfQuestions) {
 			
-			System.out.printf("You answered %d out of %d correctly \n", score, totalNoOfQuestions);
+			System.out.printf("\nYou answered %d out of %d correctly \n", score, totalNoOfQuestions);
 			startGame();
 			
 		}
@@ -122,7 +124,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 		
 		boolean start = false;
 		
-		System.out.println("Do you want to set up a new quiz game? (y/n)");
+		System.out.println("\nSo, do you wanna play (again) or not? (y/n)");
 //		String inputConsoleReadLine = System.console().readLine();
 		String inputConsoleReadLine = "yes";
 		char input = inputConsoleReadLine.trim().toLowerCase().charAt(0);
@@ -261,7 +263,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 		}
 		
 		
-		if (userInput == newCorrectAnswerIndex) {
+		if (userInput == newCorrectAnswerIndex - 1) {
 			
 				score++; 
 		

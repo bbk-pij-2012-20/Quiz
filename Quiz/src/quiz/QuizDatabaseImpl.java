@@ -76,6 +76,14 @@ public class QuizDatabaseImpl implements QuizDatabase {
 	
 	}
 	
+	/**
+	 * Tests whether the index values passed to getQuestion(int,int) are within
+	 * bounds of the questionList and countryList arrays.
+	 * 
+	 * @param listIndex  an int corresponding to index position in 1D array
+	 * @param list       a String array that holds question types or country names.
+ 	 * @return           false if index is not within array dimensions, also throws/catches an ArrayIndexOutOfBoundsException
+	 */
 	private boolean checkArgumentInBounds(int listIndex, String[] list) {
 		
 		boolean outOfBounds = false;

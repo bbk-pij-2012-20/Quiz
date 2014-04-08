@@ -24,5 +24,31 @@ public interface QueAndAns {
 	 * @return   returns the list of 2 question indices and 4 answers.
 	 */
 	int[] getQue_AnsList();
+
+	/**
+	 * Setter for questionListIndex
+	 */
+	void setCountryListIndex(int countryListIndex);
+
+	/**
+	 * Setter for questionListIndex
+	 */
+	void setQuestionListIndex(int questionListIndex);
 		
+	/**
+	 * Called from QuizServer's playQuiz() to present the quiz 
+	 * question to the playerClient.
+	 * 
+	 * @return  returns the whole question sentence.
+	 */
+	String toString();
+
+	/**
+	 * a setter for que_AnsList (primarily for JUnit)
+	 * 
+	 * @param que_AnsList an int array encoding questions and containing answers
+	 * @return
+	 */
+	void setQue_AnsList(int[] que_AnsList);
+
 }

@@ -5,8 +5,8 @@ public interface QuizDatabase {
 	/**
 	 * Gets the first part of the whole question from QuizDatabase, located by its index.
 	 * 
-	 * @param questionListIndex   an int that is the location of the first part of a question, stored in a list in QuizDatabase.
-	 * @return                    the String that is the first part of the question (the type of question).
+	 * @param questionListIndex   takes an int that is the location of the first part of a question (stored in a list).
+	 * @return                    returns the String that is the first part of the question (the type of question).
 	 */
 	String getQuestion(int questionListIndex);
 

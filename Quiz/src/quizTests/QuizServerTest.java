@@ -58,7 +58,7 @@ public class QuizServerTest {
 		
 		QueAndAnsImpl[] listOfQAndALists = new QueAndAnsImpl[10];
 		serverObj.setListOfQAndALists(listOfQAndALists);
-			
+		
 		QueAndAnsImpl qAObj1 = new QueAndAnsImpl(4);
 		qAObj1.setQuestionListIndex(2); //highest peak of
 		qAObj1.setCountryListIndex(2); // Bulgaria 
@@ -137,7 +137,6 @@ public class QuizServerTest {
 
 		serverObj = new QuizServer(10,4);
 		serverObj.playQuiz();
-		
 		
 	}
 	

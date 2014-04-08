@@ -13,6 +13,12 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 	private QueAndAns[] listOfQAndALists;
 	private final int ORIGINAL_CORRECT_ANSWER_INDEX = 2;
 
+	public static void main(String[] args) throws RemoteException {
+		
+		QuizServer quizServer = new QuizServer(10,4);
+		quizServer.playQuiz();
+		
+	}
 	/**
 	 * getter for score (primarily for JUnit)
 	 * 
@@ -53,7 +59,6 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 	@Override
 	public void setUpQuiz(int numberOfQuestions, int numberOfAnswersPerQuestion) throws RemoteException {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override

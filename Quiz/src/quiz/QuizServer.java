@@ -237,7 +237,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizService {
 	 * @param newCorrectAnswerIndex   the position of the correct answer after calling shuffleAnswers()
 	 * 
 	 * (temporarily made public for JUnit test)  
-	 */
+	 */ 
 	private int keepScore(String userInputStr, int newCorrectAnswerIndex) throws RemoteException {
 	
 		int userInput = 0;

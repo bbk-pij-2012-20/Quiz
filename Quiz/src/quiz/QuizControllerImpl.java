@@ -7,6 +7,8 @@ import java.io.Serializable;
 
 public class QuizControllerImpl extends UnicastRemoteObject implements QuizController {
 
+	private QuizModelImpl quizModel = new QuizModelImpl(); 
+	
 	/**
 	 * 
 	 */
@@ -28,8 +30,7 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 
 	public QuizControllerImpl(int totalNoOfQuestions, int noOfAnswersPerQuestion) throws RemoteException {
 
-		this.totalNoOfQuestions = totalNoOfQuestions;
-		this.noOfAnswersPerQuestion = noOfAnswersPerQuestion;
+		new QuizModelImpl(totalNoOfQuestions,noOfAnswersPerQuestion);
 	
 	}
 
@@ -37,13 +38,13 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 	public void playQuiz() throws RemoteException {
 	
 		System.out.println("------------------- SHAHIN'S CRAZY NEW QUIZ CHALLENGE -------------------\n"); 		
-		System.out.println("                    There are " + totalNoOfQuestions + " questions to answer. "); 
-		System.out.println("                    Only one of the " + noOfAnswersPerQuestion + " answers is the correct one. \n");  
+		System.out.println("                    There are " + quizModel.getTotalNoOfQuestions() + " questions to answer. "); 
+		System.out.println("                    Only one of the " + quizModel.getNoOfAnswersPerQuestion() + " answers is the correct one. \n");  
 		System.out.println("-------------------------------------------------------------------------"); 		
 		
 		if (startGame()) {
 			
-			makeListOfQAndALists();
+			quizModel.makeListOfQAndALists();
 		
 		} else {
 			
@@ -54,30 +55,30 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 		int noOfQuestionsAnswered = 0;
 		int newCorrectAnswerIndex = 0;
 		
-		for (int questionNo = 0; questionNo < totalNoOfQuestions; questionNo++) {
+		for (int questionNo = 0; questionNo < quizModel.getTotalNoOfQuestions(); questionNo++) {
 			
 			System.out.print("\n\nQuestion#");
 			System.out.print(questionNo + 1 +": ");
-			System.out.println(listOfQAndALists[questionNo].toString());
+			System.out.println(quizModel.getListOfQAndALists()[questionNo].toString());
 			System.out.println("\nPick one of the following: ");
-		 	newCorrectAnswerIndex = shuffleAnswers(questionNo);
+		 	newCorrectAnswerIndex = quizModel.shuffleAnswers(questionNo);
 
-			for (int answerNo = 0; answerNo < noOfAnswersPerQuestion; answerNo++) {
+			for (int answerNo = 0; answerNo < quizModel.getNoOfAnswersPerQuestion(); answerNo++) {
 			
-				System.out.println(answerNo + 1 + ".  " + listOfQAndALists[questionNo].getQue_AnsList()[answerNo+2]);
+				System.out.println(answerNo + 1 + ".  " + quizModel.getListOfQAndALists()[questionNo].getQue_AnsList()[answerNo+2]);
 				
 			}
 			
 //			String inputConsoleReadLine = System.console().readLine();
 			String inputConsoleReadLine = "1";
 
-			noOfQuestionsAnswered += keepScore(inputConsoleReadLine, newCorrectAnswerIndex);
+			noOfQuestionsAnswered += quizModel.keepScore(inputConsoleReadLine, newCorrectAnswerIndex);
 			
 		}
 		
-		if (noOfQuestionsAnswered == totalNoOfQuestions) {
+		if (noOfQuestionsAnswered == quizModel.getTotalNoOfQuestions()) {
 			
-			System.out.printf("\nYou answered %d out of %d correctly \n", score, totalNoOfQuestions);
+			System.out.printf("\nYou answered %d out of %d correctly \n", quizModel.getScore(), quizModel.getTotalNoOfQuestions());
 			startGame();
 			
 		}

@@ -12,10 +12,18 @@ public class PlayerClient {
 		
 		try {
 	
-			Remote remoteObj = Naming.lookup("//127.0.0.1:1099/Quizzy");
+			Remote remoteObj = Naming.lookup("//127.0.0.1:1099/playerServer");
 			PlayerService playerService = (PlayerService) remoteObj;
-			System.out.println("hello I'm a player");
-		
+			System.out.println("Choose which game to play (1/2/3): "+playerService.getGameList());
+			char playerInput = System.console().readLine().trim().toLowerCase().charAt(0);
+			System.out.println(playerService.getPlayerView(playerInput));			
+			
+			while (!playerService.isGameOver()) {
+				
+				System.out.println(playerService.updateView(System.console().readLine()));
+				
+			}			
+			
 		} catch (RemoteException e) {
 		
 			e.printStackTrace();
@@ -29,7 +37,27 @@ public class PlayerClient {
 			e.printStackTrace();
 		
 		}
-	
+		
+		try {
+			
+			Remote remoteObj2 = Naming.lookup("//127.0.0.1:1099/quizMaker");
+			SetUpService setUpService = (SetUpService) remoteObj2;
+			System.out.println("hello I'm a maker");
+
+		} catch (RemoteException e) {
+			
+			e.printStackTrace();
+		
+		} catch (NotBoundException e) {
+		
+			e.printStackTrace();
+		
+		} catch (Exception e) {
+		
+			e.printStackTrace();
+		
+		}
+		
 	}
 	
 }

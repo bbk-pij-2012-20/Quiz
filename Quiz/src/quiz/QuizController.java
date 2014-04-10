@@ -1,280 +1,47 @@
 package quiz;
 
+import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
-import java.util.Random;
 import java.io.Serializable;
 
-public class QuizController extends UnicastRemoteObject implements QuizService {
-
-	private int score = 0;
-	private int totalNoOfQuestions; 
-	private int noOfAnswersPerQuestion;
-	private QueAndAns[] listOfQAndALists;
-	private final int ORIGINAL_CORRECT_ANSWER_INDEX = 2;
-
-	public static void main(String[] args) throws RemoteException {
-		
-		QuizController quizController = new QuizController(10,4);
-		quizController.playQuiz();
-		
-	}
+public interface QuizController extends Remote {
 
 	/**
-	 * empty constructor must be explicitly written for RMI
+	 * Gives the setUpClient options on design of the quiz in terms of 
+	 * number of questions and number of answers per question.
+	 * 
+	 * @param numberOfQuestions             number of questions per quiz
+	 * @param numberOfAnswersPerQuestions   number of answers per question for multiple choice (includes 1 correct answer)
+	 * @throws RemoteException              in case anything goes wrong with network connectivity.
+	 */
+	void setUpQuiz(int numberOfQuestions, int numberOfAnswersPerQuestion) throws RemoteException;
+	
+	/**
+	 * Gives the playerClient option to begin a new quiz, with parameters set up by setUpClient. It calls 
+	 * the private method startGame() to prompt the user to start. It calls the private method 
+	 * makeListOfQAndALists(), which calls private method isRepeatedQuestion(QueAndAns,int) to prevent 
+	 * repeating the same question. It calls two more private methods: keepScore(String,int,int) and 
+	 * shuffleAnswers(int).
+	 * 
+	 * @throws RemoteException    throws RemoteException if anything goes wrong with network connectivity.
+	 */
+	void playQuiz() throws RemoteException;
+
+	/**
+	 * getter for listOfQAndALists (primarily for JUnit)
+	 * 
+	 * @return an array of type QueAndAns 
 	 * @throws RemoteException
 	 */
-	public QuizController() throws RemoteException {}
-
-	public QuizController(int totalNoOfQuestions, int noOfAnswersPerQuestion) throws RemoteException {
-
-		this.totalNoOfQuestions = totalNoOfQuestions;
-		this.noOfAnswersPerQuestion = noOfAnswersPerQuestion;
+	QueAndAns[] getListOfQAndALists() throws RemoteException;
 	
-	}
 
-	@Override
-	public QueAndAns[] getListOfQAndALists() throws RemoteException{
-		
-		return listOfQAndALists;
-		
-	}
-	
-	@Override
-	public void setListOfQAndALists(QueAndAns[] listOfQAndALists) throws RemoteException{
-		
-		this.listOfQAndALists = listOfQAndALists;
-		
-	}
-	@Override
-	public void setUpQuiz(int numberOfQuestions, int numberOfAnswersPerQuestion) throws RemoteException {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void playQuiz() throws RemoteException {
-	
-		System.out.println("------------------- SHAHIN'S CRAZY NEW QUIZ CHALLENGE -------------------\n"); 		
-		System.out.println("                    There are " + totalNoOfQuestions + " questions to answer. "); 
-		System.out.println("                    Only one of the " + noOfAnswersPerQuestion + " answers is the correct one. \n");  
-		System.out.println("-------------------------------------------------------------------------"); 		
-		
-		if (startGame()) {
-			
-			makeListOfQAndALists();
-		
-		} else {
-			
-			System.exit(0);
-		
-		}
-		
-		int noOfQuestionsAnswered = 0;
-		int newCorrectAnswerIndex = 0;
-		
-		for (int questionNo = 0; questionNo < totalNoOfQuestions; questionNo++) {
-			
-			System.out.print("\n\nQuestion#");
-			System.out.print(questionNo + 1 +": ");
-			System.out.println(listOfQAndALists[questionNo].toString());
-			System.out.println("\nPick one of the following: ");
-		 	newCorrectAnswerIndex = shuffleAnswers(questionNo);
-
-			for (int answerNo = 0; answerNo < noOfAnswersPerQuestion; answerNo++) {
-			
-				System.out.println(answerNo + 1 + ".  " + listOfQAndALists[questionNo].getQue_AnsList()[answerNo+2]);
-				
-			}
-			
-//			String inputConsoleReadLine = System.console().readLine();
-			String inputConsoleReadLine = "1";
-
-			noOfQuestionsAnswered += keepScore(inputConsoleReadLine, newCorrectAnswerIndex);
-			
-		}
-		
-		if (noOfQuestionsAnswered == totalNoOfQuestions) {
-			
-			System.out.printf("\nYou answered %d out of %d correctly \n", score, totalNoOfQuestions);
-			startGame();
-			
-		}
-					
-	}
-	
 	/**
-	 * Prompts playerClient to start game. Accepts any input beginning with y or n. 
-	 * Input y resumes with playQuiz(), otherwise terminates program.
+	 * setter for listOfQAndALists (primarily for JUnit)
 	 * 
-	 * @return    true if user enters any word beginning with y.
-	 * 
-	 * (temporarily made public for JUnit test)
-	 */
-	private boolean startGame() throws RemoteException {
-		
-		boolean start = false;
-		
-		System.out.println("\nSo, do you wanna play (again) or not? (y/n)");
-//		String inputConsoleReadLine = System.console().readLine();
-		String inputConsoleReadLine = "yes";
-		char input = inputConsoleReadLine.trim().toLowerCase().charAt(0);
-		
-		if (input == 'y') {
-		
-			start = true;
-		
-		} else if (input == 'n') {
-		
-			System.out.println("goodbye");
-			start = false;	
-		
-		} else { 
-		
-			System.out.println("that was neither y or n. Try again");
-			startGame();		
-		
-		}
-		
-		return start;
-
-	}
-	
-	/**
-	 * Fills the listOfQueAndAnsLists with que_AndLists with as many as the setUpClient has specified. 
-	 * Assures no repeated questions by calling isRepeatedQuestion(QueAndAns, int). 
-	 * 
-	 * (temporarily made public for JUnit test)
-	 */
-	private void makeListOfQAndALists() throws RemoteException {
-	
-		listOfQAndALists = new QueAndAns[totalNoOfQuestions];
-		QueAndAnsImpl queAndAnsObj;
-
-		for (int i = 0; i < listOfQAndALists.length; i++) {
-		
-			queAndAnsObj = new QueAndAnsImpl(noOfAnswersPerQuestion);
-			listOfQAndALists[i] = queAndAnsObj;			
-				
-			if (isRepeatedQuestion(queAndAnsObj, i)) {
-			
-				i--;
-				
-			}
-				
-		}
-		
-	}
-	
-	
-	/**
-	 * @param queAndAnsObj            a queAndAnsObj, created and passed from makeListOfQAndALists()
-	 * @param listOfQAndAListsIndex   an int that is the position of the current queAndAnsObj created and passed from makeListOfQAndALists()  
-	 * @return                        true if the question was already created and stored at another position in the listOfQAndALists
-	 * 
-	 * (temporarily made public for JUnit test)  
-	 */
-	private boolean isRepeatedQuestion(QueAndAnsImpl queAndAnsObj, int listOfQAndAListsIndex) throws RemoteException {
-	
-		boolean same = false;
-		int i = 0;
-		
-		while (!same && i < listOfQAndAListsIndex) {
-			
-			if (queAndAnsObj.getQue_AnsList()[0] == listOfQAndALists[i].getQue_AnsList()[0]) {
-
-				if (queAndAnsObj.getQue_AnsList()[1] == listOfQAndALists[i].getQue_AnsList()[1]) {
-				
-					same = true;
-					
-				} else {
-				
-					i++;
-					continue;
-				
-				}
-									
-			} else {
-				
-				i++;
-				continue;
-				
-			}
-			
-		}
-		
-		return same;
-
-	}
-	
-	/**
-	 * Generates a new position for the correct answer (originally at position 2 in the que_AnsList), 
-	 * by random and immediately prior to being output to playerClient UI. It is only called from 
-	 * playQuiz(). 
-	 *  
-	 * @param questionNo   an int position of the current que_AnsList held in the listOfQAndALists 
-	 * @return             an int new position of the correct answer in the current que_AndAnsList.
-	 * 
-	 * (temporarily made public for JUnit test)  
-	 */
-	private int shuffleAnswers(int questionNo) throws RemoteException{
-		
-		Random randomObj = new Random();
-		int randomNewCorrectAnswerIndex = ORIGINAL_CORRECT_ANSWER_INDEX + randomObj.nextInt(4);
-
-		int temp = listOfQAndALists[questionNo].getQue_AnsList()[randomNewCorrectAnswerIndex];
-		listOfQAndALists[questionNo].getQue_AnsList()[randomNewCorrectAnswerIndex] = listOfQAndALists[questionNo].getQue_AnsList()[ORIGINAL_CORRECT_ANSWER_INDEX];
-		listOfQAndALists[questionNo].getQue_AnsList()[ORIGINAL_CORRECT_ANSWER_INDEX] = temp;
-	
-		return randomNewCorrectAnswerIndex;
-		
-	}
-	
-	/**
-	 * Increments the score for every correct answer given by the playerClient. 
-	 * (Only accepts the answer number from user, not the actual answer value).
-	 * 
-	 * @param userInputStr            the input from the playerClient
-	 * @param newCorrectAnswerIndex   the position of the correct answer after calling shuffleAnswers()
-	 * 
-	 * (temporarily made public for JUnit test)  
-	 */ 
-	private int keepScore(String userInputStr, int newCorrectAnswerIndex) throws RemoteException {
-	
-		int userInput = 0;
-	
-		try {
-
-			userInput = Integer.parseInt(userInputStr);
-				
-		} catch (NumberFormatException e) {
-			
-			System.out.println("A numeric input was required");
-		
-		}
-		
-		
-		if (userInput == newCorrectAnswerIndex - 1) {
-			
-				score++; 
-		
-		}
-		
-		int numberOfQuestionsAnswered = 1;
-		
-		return numberOfQuestionsAnswered;
-		
-	}
-	
-	/**
-	 * getter for score (primarily for JUnit)
-	 * 
-	 * @return int   the score
+	 * @param listOfQAndALists   an array of type QueAndAns
 	 * @throws RemoteException
 	 */
-	public int getScore() throws RemoteException {
-		
-		return score;
-		
-	}
+	void setListOfQAndALists(QueAndAns[] listOfQAndALists) throws RemoteException;
 
 }

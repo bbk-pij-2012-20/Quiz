@@ -10,16 +10,16 @@ import org.junit.Test;
 
 import quiz.QueAndAns;
 import quiz.QueAndAnsImpl;
-import quiz.QuizServer;
+import quiz.QuizControllerImpl;
 
 public class QuizServerTest {
 
-	QuizServer serverObj;
+	QuizControllerImpl serverObj;
 	
 	@Before
 	public void setUp() throws Exception {
 	
-		serverObj = new QuizServer();
+		serverObj = new QuizControllerImpl();
 	
 	}
 
@@ -107,7 +107,7 @@ public class QuizServerTest {
 	 @Test
 	public void testMakeListOfQAndALists() throws RemoteException {
 		
-		serverObj = new QuizServer(10,4);
+		serverObj = new QuizControllerImpl(10,4);
 		serverObj.makeListOfQAndALists();
 		boolean listOfListsFilledUp = true;
 		
@@ -135,7 +135,7 @@ public class QuizServerTest {
 	@Test
 	public void testPlayQuiz() throws RemoteException {
 
-		serverObj = new QuizServer(10,4);
+		serverObj = new QuizControllerImpl(10,4);
 		serverObj.playQuiz();
 		
 	}

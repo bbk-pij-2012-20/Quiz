@@ -15,14 +15,12 @@ public class PlayerClient {
 			Remote remoteObj = Naming.lookup("//127.0.0.1:1099/playerServer");
 			PlayerService playerService = (PlayerService) remoteObj;
 			System.out.println("Choose which game to play (1/2/3): "+playerService.getGameList());
-			char playerInput = System.console().readLine().trim().toLowerCase().charAt(0);
-			System.out.println(playerService.getPlayerView(playerInput));			
 			
-			while (!playerService.isGameOver()) {
-				
-				System.out.println(playerService.updateView(System.console().readLine()));
-				
-			}			
+			do {
+					char playerInput = System.console().readLine().trim().toLowerCase().charAt(0);
+					System.out.println(playerService.updateView(playerInput));
+						
+			} while (!playerService.isGameOver());		
 			
 		} catch (RemoteException e) {
 		

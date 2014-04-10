@@ -7,13 +7,6 @@ import java.rmi.Remote;
 public interface PlayerService extends Remote, Serializable {
 
 	/**
-	 * 
-	 * @param playerInput
-	 * @return
-	 */
-	char[] getPlayerView(char playerInput) throws RemoteException;
-
-	/**
 	 * checks with QuizController on status of the current quiz game. 
 	 * While the game is not over, it expects an input to updateView(String)
 	 * 
@@ -27,10 +20,10 @@ public interface PlayerService extends Remote, Serializable {
 	 * which processes it and returns a String to be printed out to
 	 * the player's UI (client-side). 
 	 * 
-	 * @param readLine   the player's input to the UI
+	 * @param readLine   the player's input to the UI which is only ever a single character
 	 * @return a String  which is returned to be output to UI
 	 */
-	char[] updateView(String readLine);
+	char[] updateView(char input);
 
 	/**
 	 * Called by the playerClient as the first activity in a quiz game for a player

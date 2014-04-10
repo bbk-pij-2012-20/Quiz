@@ -17,19 +17,13 @@ public class PlayerServer extends UnicastRemoteObject implements PlayerService, 
 	}
 
 	@Override
-	public char[] getPlayerView(char playerInput) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public boolean isGameOver() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public char[] updateView(String readLine) {
+	public char[] updateView(char input) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -39,5 +33,6 @@ public class PlayerServer extends UnicastRemoteObject implements PlayerService, 
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }

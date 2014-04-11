@@ -20,16 +20,52 @@ public interface QuizController extends Remote {
 
 	/**
 	 * 
-	 * @param input
-	 * @return a String of depicting the next view
+	 * @return true if game is finished.
+	 * @throws RemoteException 
 	 */
-	char[] updateView(char input);
+	boolean getGameIsOverStatus() throws RemoteException;
+
+	/**
+	 * getter for listOfQAndALists (primarily for JUnit)
+	 * 
+	 * @return an array of type QueAndAns 
+	 * @throws RemoteException
+	 */
+	QueAndAns[] getListOfQAndALists() throws RemoteException;
+	
+	/**
+	 * setter for listOfQAndALists (primarily for JUnit)
+	 * 
+	 * @param listOfQAndALists   an array of type QueAndAns
+	 * @throws RemoteException
+	 */
+	void setListOfQAndALists(QueAndAns[] listOfQAndALists) throws RemoteException;
 
 	/**
 	 * 
-	 * @return true if game is finished.
+	 * @return
+	 * @throws RemoteException
 	 */
-	boolean getGameIsOverStatus();
+	int getScore() throws RemoteException;
 
+	/**
+	 * 
+	 * @param view
+	 * @throws RemoteException
+	 */
+	void updateView(String view) throws RemoteException;
+
+	/**
+	 * 
+	 * @return
+	 * @throws RemoteException
+	 */
+	String getView() throws RemoteException;
+
+	String getUserInput() throws RemoteException;
+
+	void setUserInput(String userInput) throws RemoteException;
+
+	void processPlayerInput();
 
 }

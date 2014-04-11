@@ -8,9 +8,6 @@ import java.io.Serializable;
 
 public class SetUpClient implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -2530077513828507665L;
 
 	public static void main(String[] args) {
@@ -19,23 +16,10 @@ public class SetUpClient implements Serializable {
 			
 			Remote remoteObj2 = Naming.lookup("//127.0.0.1:1099/setup");
 			SetUpService setUpService = (SetUpService) remoteObj2;
-			System.out.println("Create a new quiz (y/n) ? " + setUpService.generateGameId());
-			
-			do {
-					System.out.println("Enter id number of game to terminate it");
-					int setUpInput = Integer.parseInt(System.console().readLine().trim());
-
-					if (setUpService.endGame(setUpInput) == 0) {
-						
-						System.out.println("No game by that Id, try again...");
-						
-					} else {
-
-						System.out.println(setUpService.updateView(setUpInput));
 					
-					}
-					
-			} while (!setUpService.isGameOver());		
+			System.out.println("Create new quizzes (y) or end a quiz by entering its id#");					
+			String input = System.console().readLine().trim()
+			setUpService.processInput(input);												
 
 		} catch (RemoteException e) {
 		

@@ -13,13 +13,10 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 	private String view = "";
 	private String userInput = "";
 	private int quizChoice = 0;
-	
-	private int score = 0;
-	private int totalNoOfQuestions; 
-	private final int NO_OF_ANSWERS_PER_QUESTION = 4;
-	private QueAndAns[] listOfQAndALists;
+	private QuizFactory quizFactory = new QuizFactoryImpl();
 	private final int ORIGINAL_CORRECT_ANSWER_INDEX = 2;
-	private Map<Integer,QueAndAns[]> quizAndIds;
+
+	private int score = 0;
 
 	private static final long serialVersionUID = 4592620853082060733L;
 
@@ -29,11 +26,6 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 	 */
 	public QuizControllerImpl() throws RemoteException {}
 
-	public QuizControllerImpl(int totalNoOfQuestions) throws RemoteException {
-
-		this.totalNoOfQuestions = totalNoOfQuestions;
-		
-	}
 	
 	@Override
 	public void setUserInput(String userInput) throws RemoteException {
@@ -88,96 +80,19 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 		return userInput;
 	
 	}
-
-	@Override
-	public QueAndAns[] getListOfQAndALists() throws RemoteException{
-		
-		return listOfQAndALists;
-		
-	}
-	
-	@Override
-	public void setListOfQAndALists(QueAndAns[] listOfQAndALists) throws RemoteException{
-		
-		this.listOfQAndALists = listOfQAndALists;
-		
-	}
-	
-	/**
-	 * This method is for setUpClient to call
-	 * 
-	 * @throws RemoteException
-	 */
-	protected void makeQuizOfPlayerChoice() throws RemoteException {
-		
-		switch (quizChoice) {
-			
-			case 1: makeListOfQAndALists(2); break;
-			case 2: makeListOfQAndALists(5); break;
-			case 3: makeListOfQAndALists(10); break;
-			default: throw new IllegalArgumentException("the choice is not 1,2,or 3");
-			
-		}
-		
-	}
-	
-	/**
-	 * Fills the listOfQueAndAnsLists with que_AndLists with as many as the setUpClient has specified. 
-	 * Assures no repeated questions by calling isRepeatedQuestion(QueAndAns, int). 
-	 * 
-	 * (temporarily made public for JUnit test)
-	 */
-	private void makeListOfQAndALists(int noOfQuestions) throws RemoteException {
-		
-		this.totalNoOfQuestions = noOfQuestions;
-		listOfQAndALists = new QueAndAns[totalNoOfQuestions];
-		QueAndAnsImpl queAndAnsObj;
-
-		for (int i = 0; i < listOfQAndALists.length; i++) {
-		
-			queAndAnsObj = new QueAndAnsImpl(NO_OF_ANSWERS_PER_QUESTION);
-			listOfQAndALists[i] = queAndAnsObj;			
-				
-			if (isRepeatedQuestion(queAndAnsObj, i)) {
-			
-				i--;
-				
-			}
-				
-		}
-		
-		generateAndStoreId(listOfQAndALists);
-		
-	}
-
-	private void generateAndStoreId(QueAndAns[] listOfQAndALists) {
-		
-		int id = 0;
-		quizAndIds = new HashMap<>();
-		Random randomObj = new Random();
-		
-		do {
-			
-			id = randomObj.nextInt(10000)+1;
-		
-		} while (quizAndIds.containsKey(id));
-
-		quizAndIds.put(id,listOfQAndALists);
-
-	}
 	
 	@Override
 	public void playQuiz() throws RemoteException {
 	
-		/*		System.out.println("------------------- NEW GAME -------------------\n"); 		
+/*		System.out.println("------------------- NEW GAME -------------------\n"); 		
 		System.out.println("There are " + totalNoOfQuestions + " questions to answer. "); 
 		System.out.println("Select one of the " + noOfAnswersPerQuestion + " answers\n");  
 		System.out.println("------------------------------------------------"); 		
 */
 
 		updateView("------------------- NEW GAME -------------------\n\nThere are " 
-		+ totalNoOfQuestions + " questions to answer. \nSelect one of the " 
-		+ NO_OF_ANSWERS_PER_QUESTION + " answers\n\n ------------------------------------------------\n");
+		+ quizFactory.getTotalNoOfQuestions() + " questions to answer. \nSelect one of the " 
+		+ quizFactory.getNoOfAnswersPerQuestion() + " answers\n\n ------------------------------------------------\n");
 		
 		if (startGame()) {
 			
@@ -192,7 +107,7 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 		int noOfQuestionsAnswered = 0;
 		int newCorrectAnswerIndex = 0;
 		
-		for (int questionNo = 0; questionNo < getTotalNoOfQuestions(); questionNo++) {
+		for (int questionNo = 0; questionNo < quizFactory.getTotalNoOfQuestions(); questionNo++) {
 			
 			/*			System.out.print("Question#");
 			System.out.println(questionNo + 1 +":");
@@ -201,15 +116,15 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 */
 			updateView("Question#");
 			updateView(questionNo + 1 +":\n");
-			updateView(listOfQAndALists[questionNo].toString()+"\n");
+			updateView(quizFactory.getListOfQAndALists()[questionNo].toString()+"\n");
 			updateView("Pick one: \n");
 
 			newCorrectAnswerIndex = shuffleAnswers(questionNo);
 
-			for (int answerNo = 0; answerNo < getNoOfAnswersPerQuestion(); answerNo++) {
+			for (int answerNo = 0; answerNo < quizFactory.getNoOfAnswersPerQuestion(); answerNo++) {
 			
 //				System.out.println(answerNo + 1 + ".  " + listOfQAndALists[questionNo].getQue_AnsList()[answerNo+2]);
-				updateView(answerNo + 1 + ".  " + listOfQAndALists[questionNo].getQue_AnsList()[answerNo+2]+"\n");
+				updateView(answerNo + 1 + ".  " + quizFactory.getListOfQAndALists()[questionNo].getQue_AnsList()[answerNo+2]+"\n");
 				
 			}
 			
@@ -221,10 +136,10 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 			
 		}
 		
-		if (noOfQuestionsAnswered == getTotalNoOfQuestions()) {
+		if (noOfQuestionsAnswered == quizFactory.getTotalNoOfQuestions()) {
 			
 //			System.out.printf("You answered %d out of %d correctly \n", score, totalNoOfQuestions);
-			updateView("You answered " + score + " out of "+ totalNoOfQuestions + "correctly \n");
+			updateView("You answered " + score + " out of "+ quizFactory.getTotalNoOfQuestions() + "correctly \n");
 
 			startGame();
 			
@@ -232,8 +147,9 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 					
 	}
 	
-	public void endGamePrematurely(int Id){
+	public synchronized void endGamePrematurely(Integer id) {
 		
+		//TODO
 		
 	}
 	
@@ -281,46 +197,7 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 		
 	}
 	
-	/**
-	 * @param queAndAnsObj            a queAndAnsObj, created and passed from makeListOfQAndALists()
-	 * @param listOfQAndAListsIndex   an int that is the position of the current queAndAnsObj created and passed from makeListOfQAndALists()  
-	 * @return                        true if the question was already created and stored at another position in the listOfQAndALists
-	 * 
-	 * (temporarily made public for JUnit test)  
-	 */
-	private boolean isRepeatedQuestion(QueAndAnsImpl queAndAnsObj, int listOfQAndAListsIndex) throws RemoteException {
-	
-		boolean same = false;
-		int i = 0;
-		
-		while (!same && i < listOfQAndAListsIndex) {
-			
-			if (queAndAnsObj.getQue_AnsList()[0] == listOfQAndALists[i].getQue_AnsList()[0]) {
 
-				if (queAndAnsObj.getQue_AnsList()[1] == listOfQAndALists[i].getQue_AnsList()[1]) {
-				
-					same = true;
-					
-				} else {
-				
-					i++;
-					continue;
-				
-				}
-									
-			} else {
-				
-				i++;
-				continue;
-				
-			}
-			
-		}
-		
-		return same;
-
-	}
-	
 	/**
 	 * Generates a new position for the correct answer (originally at position 2 in the que_AnsList), 
 	 * by random and immediately prior to being output to playerClient UI. It is only called from 
@@ -336,9 +213,9 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 		Random randomObj = new Random();
 		int randomNewCorrectAnswerIndex = ORIGINAL_CORRECT_ANSWER_INDEX + randomObj.nextInt(4);
 
-		int temp = listOfQAndALists[questionNo].getQue_AnsList()[randomNewCorrectAnswerIndex];
-		listOfQAndALists[questionNo].getQue_AnsList()[randomNewCorrectAnswerIndex] = listOfQAndALists[questionNo].getQue_AnsList()[ORIGINAL_CORRECT_ANSWER_INDEX];
-		listOfQAndALists[questionNo].getQue_AnsList()[ORIGINAL_CORRECT_ANSWER_INDEX] = temp;
+		int temp = quizFactory.getListOfQAndALists()[questionNo].getQue_AnsList()[randomNewCorrectAnswerIndex];
+		quizFactory.getListOfQAndALists()[questionNo].getQue_AnsList()[randomNewCorrectAnswerIndex] = listOfQAndALists[questionNo].getQue_AnsList()[ORIGINAL_CORRECT_ANSWER_INDEX];
+		quizFactory.getListOfQAndALists()[questionNo].getQue_AnsList()[ORIGINAL_CORRECT_ANSWER_INDEX] = temp;
 	
 		return randomNewCorrectAnswerIndex;
 		
@@ -390,33 +267,6 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 	public int getScore() throws RemoteException {
 		
 		return score;
-		
-	}
-	
-	@Override
-	public int getTotalNoOfQuestions() throws RemoteException {
-	
-		return totalNoOfQuestions; 
-
-	}
-
-	@Override
-	public int getNoOfAnswersPerQuestion() throws RemoteException {
-		
-		return NO_OF_ANSWERS_PER_QUESTION;
-
-	}
-
-	@Override
-	public char[] updateView(char input) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setUpQuiz(int numberOfQuestions, int numberOfAnswersPerQuestion)
-			throws RemoteException {
-		// TODO Auto-generated method stub
 		
 	}
 	

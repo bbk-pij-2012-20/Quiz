@@ -31,8 +31,8 @@ public class QuizLauncher {
 			PlayerServer playerServer = new PlayerServer();
 			SetUpServer setUpServer = new SetUpServer();
 			String registryHost = "//localhost/";
-			String serviceName = "playerServer";
-			String serviceName2 = "setUpServer";
+			String serviceName = "play";
+			String serviceName2 = "setup";
 			Naming.rebind(registryHost+serviceName,playerServer);
 			Naming.rebind(registryHost+serviceName2,setUpServer);
 

@@ -2,6 +2,8 @@ package quiz;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.io.Serializable;
 
@@ -17,6 +19,7 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 	private final int NO_OF_ANSWERS_PER_QUESTION = 4;
 	private QueAndAns[] listOfQAndALists;
 	private final int ORIGINAL_CORRECT_ANSWER_INDEX = 2;
+	private Map<Integer,QueAndAns[]> quizAndIds;
 
 	private static final long serialVersionUID = 4592620853082060733L;
 
@@ -100,6 +103,11 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 		
 	}
 	
+	/**
+	 * This method is for setUpClient to call
+	 * 
+	 * @throws RemoteException
+	 */
 	protected void makeQuizOfPlayerChoice() throws RemoteException {
 		
 		switch (quizChoice) {
@@ -138,9 +146,26 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 				
 		}
 		
+		generateAndStoreId(listOfQAndALists);
+		
 	}
 
+	private void generateAndStoreId(QueAndAns[] listOfQAndALists) {
+		
+		int id = 0;
+		quizAndIds = new HashMap<>();
+		Random randomObj = new Random();
+		
+		do {
+			
+			id = randomObj.nextInt(10000)+1;
+		
+		} while (quizAndIds.containsKey(id));
 
+		quizAndIds.put(id,listOfQAndALists);
+
+	}
+	
 	@Override
 	public void playQuiz() throws RemoteException {
 	
@@ -205,6 +230,11 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 			
 		}
 					
+	}
+	
+	public void endGamePrematurely(int Id){
+		
+		
 	}
 	
 	/**

@@ -18,5 +18,18 @@ public interface QuizController extends Remote {
 	 */
 	void playQuiz() throws RemoteException;
 
+	/**
+	 * 
+	 * @param input
+	 * @return a String of depicting the next view
+	 */
+	char[] updateView(char input);
+
+	/**
+	 * 
+	 * @return true if game is finished.
+	 */
+	boolean getGameIsOverStatus();
+
 
 }

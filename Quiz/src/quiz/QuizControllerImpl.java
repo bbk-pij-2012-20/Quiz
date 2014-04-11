@@ -8,20 +8,17 @@ import java.io.Serializable;
 public class QuizControllerImpl extends UnicastRemoteObject implements QuizController {
 
 	private boolean gameIsOver = true;
-	private QuizModelImpl quizModel = new QuizModelImpl(); 
+	private String view = "";
+	private String userInput = "";
+	private int quizChoice = 0;
 	
-	/**
-	 * 
-	 */
+	private int score = 0;
+	private int totalNoOfQuestions; 
+	private final int NO_OF_ANSWERS_PER_QUESTION = 4;
+	private QueAndAns[] listOfQAndALists;
+	private final int ORIGINAL_CORRECT_ANSWER_INDEX = 2;
+
 	private static final long serialVersionUID = 4592620853082060733L;
-
-
-	public static void main(String[] args) throws RemoteException {
-		
-		QuizControllerImpl quizController = new QuizControllerImpl(10,4);
-		quizController.playQuiz();
-		
-	}
 
 	/**
 	 * empty constructor must be explicitly written for RMI
@@ -29,23 +26,137 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 	 */
 	public QuizControllerImpl() throws RemoteException {}
 
-	public QuizControllerImpl(int totalNoOfQuestions, int noOfAnswersPerQuestion) throws RemoteException {
+	public QuizControllerImpl(int totalNoOfQuestions) throws RemoteException {
 
-		new QuizModelImpl(totalNoOfQuestions,noOfAnswersPerQuestion);
+		this.totalNoOfQuestions = totalNoOfQuestions;
+		
+	}
+	
+	@Override
+	public void setUserInput(String userInput) throws RemoteException {
+	
+		this.userInput = userInput;
+		
+	}
+	
+	@Override
+	public void processPlayerInput() {
+		
+		boolean quizChoiceMade = false;
+		int userInput = 0;
+
+		try {
+			
+			userInput = Integer.parseInt(this.userInput);
+			
+			while (!quizChoiceMade) {
+				
+				quizChoice = userInput;
+				quizChoiceMade = true;
+			
+			}
+			
+		} catch (NumberFormatException e) {
+			
+			System.out.println("the user input was not a number");
+			e.printStackTrace();
+			
+		}
+		
+	}
+
+	@Override
+	public void updateView(String view) throws RemoteException {
+	
+		this.view += view;
+		
+	}
+	
+	@Override
+	public String getView() throws RemoteException {
+	
+		return view;
+	
+	}
+	
+	@Override
+	public String getUserInput() throws RemoteException {
+	
+		return userInput;
 	
 	}
 
 	@Override
+	public QueAndAns[] getListOfQAndALists() throws RemoteException{
+		
+		return listOfQAndALists;
+		
+	}
+	
+	@Override
+	public void setListOfQAndALists(QueAndAns[] listOfQAndALists) throws RemoteException{
+		
+		this.listOfQAndALists = listOfQAndALists;
+		
+	}
+	
+	protected void makeQuizOfPlayerChoice() throws RemoteException {
+		
+		switch (quizChoice) {
+			
+			case 1: makeListOfQAndALists(2); break;
+			case 2: makeListOfQAndALists(5); break;
+			case 3: makeListOfQAndALists(10); break;
+			default: throw new IllegalArgumentException("the choice is not 1,2,or 3");
+			
+		}
+		
+	}
+	
+	/**
+	 * Fills the listOfQueAndAnsLists with que_AndLists with as many as the setUpClient has specified. 
+	 * Assures no repeated questions by calling isRepeatedQuestion(QueAndAns, int). 
+	 * 
+	 * (temporarily made public for JUnit test)
+	 */
+	private void makeListOfQAndALists(int noOfQuestions) throws RemoteException {
+		
+		this.totalNoOfQuestions = noOfQuestions;
+		listOfQAndALists = new QueAndAns[totalNoOfQuestions];
+		QueAndAnsImpl queAndAnsObj;
+
+		for (int i = 0; i < listOfQAndALists.length; i++) {
+		
+			queAndAnsObj = new QueAndAnsImpl(NO_OF_ANSWERS_PER_QUESTION);
+			listOfQAndALists[i] = queAndAnsObj;			
+				
+			if (isRepeatedQuestion(queAndAnsObj, i)) {
+			
+				i--;
+				
+			}
+				
+		}
+		
+	}
+
+
+	@Override
 	public void playQuiz() throws RemoteException {
 	
-		System.out.println("------------------- SHAHIN'S CRAZY NEW QUIZ CHALLENGE -------------------\n"); 		
-		System.out.println("                    There are " + quizModel.getTotalNoOfQuestions() + " questions to answer. "); 
-		System.out.println("                    Only one of the " + quizModel.getNoOfAnswersPerQuestion() + " answers is the correct one. \n");  
-		System.out.println("-------------------------------------------------------------------------"); 		
+		/*		System.out.println("------------------- NEW GAME -------------------\n"); 		
+		System.out.println("There are " + totalNoOfQuestions + " questions to answer. "); 
+		System.out.println("Select one of the " + noOfAnswersPerQuestion + " answers\n");  
+		System.out.println("------------------------------------------------"); 		
+*/
+
+		updateView("------------------- NEW GAME -------------------\n\nThere are " 
+		+ totalNoOfQuestions + " questions to answer. \nSelect one of the " 
+		+ NO_OF_ANSWERS_PER_QUESTION + " answers\n\n ------------------------------------------------\n");
 		
 		if (startGame()) {
 			
-			quizModel.makeListOfQAndALists();
+			makeListOfQAndALists();
 		
 		} else {
 			
@@ -56,30 +167,40 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 		int noOfQuestionsAnswered = 0;
 		int newCorrectAnswerIndex = 0;
 		
-		for (int questionNo = 0; questionNo < quizModel.getTotalNoOfQuestions(); questionNo++) {
+		for (int questionNo = 0; questionNo < getTotalNoOfQuestions(); questionNo++) {
 			
-			System.out.print("\n\nQuestion#");
-			System.out.print(questionNo + 1 +": ");
-			System.out.println(quizModel.getListOfQAndALists()[questionNo].toString());
-			System.out.println("\nPick one of the following: ");
-		 	newCorrectAnswerIndex = quizModel.shuffleAnswers(questionNo);
+			/*			System.out.print("Question#");
+			System.out.println(questionNo + 1 +":");
+			System.out.println(listOfQAndALists[questionNo].toString());
+			System.out.println("Pick one: ");
+*/
+			updateView("Question#");
+			updateView(questionNo + 1 +":\n");
+			updateView(listOfQAndALists[questionNo].toString()+"\n");
+			updateView("Pick one: \n");
 
-			for (int answerNo = 0; answerNo < quizModel.getNoOfAnswersPerQuestion(); answerNo++) {
+			newCorrectAnswerIndex = shuffleAnswers(questionNo);
+
+			for (int answerNo = 0; answerNo < getNoOfAnswersPerQuestion(); answerNo++) {
 			
-				System.out.println(answerNo + 1 + ".  " + quizModel.getListOfQAndALists()[questionNo].getQue_AnsList()[answerNo+2]);
+//				System.out.println(answerNo + 1 + ".  " + listOfQAndALists[questionNo].getQue_AnsList()[answerNo+2]);
+				updateView(answerNo + 1 + ".  " + listOfQAndALists[questionNo].getQue_AnsList()[answerNo+2]+"\n");
 				
 			}
 			
 //			String inputConsoleReadLine = System.console().readLine();
-			String inputConsoleReadLine = "1";
+//			String inputConsoleReadLine = "1";
+			String inputConsoleReadLine = getUserInput();
 
-			noOfQuestionsAnswered += quizModel.keepScore(inputConsoleReadLine, newCorrectAnswerIndex);
+			noOfQuestionsAnswered += keepScore(inputConsoleReadLine, newCorrectAnswerIndex);
 			
 		}
 		
-		if (noOfQuestionsAnswered == quizModel.getTotalNoOfQuestions()) {
+		if (noOfQuestionsAnswered == getTotalNoOfQuestions()) {
 			
-			System.out.printf("\nYou answered %d out of %d correctly \n", quizModel.getScore(), quizModel.getTotalNoOfQuestions());
+//			System.out.printf("You answered %d out of %d correctly \n", score, totalNoOfQuestions);
+			updateView("You answered " + score + " out of "+ totalNoOfQuestions + "correctly \n");
+
 			startGame();
 			
 		}
@@ -124,16 +245,149 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 	}
 	
 	@Override
-	public boolean getGameIsOverStatus() {
+	public boolean getGameIsOverStatus() throws RemoteException{
 		
 		return gameIsOver;
 		
 	}
+	
+	/**
+	 * @param queAndAnsObj            a queAndAnsObj, created and passed from makeListOfQAndALists()
+	 * @param listOfQAndAListsIndex   an int that is the position of the current queAndAnsObj created and passed from makeListOfQAndALists()  
+	 * @return                        true if the question was already created and stored at another position in the listOfQAndALists
+	 * 
+	 * (temporarily made public for JUnit test)  
+	 */
+	private boolean isRepeatedQuestion(QueAndAnsImpl queAndAnsObj, int listOfQAndAListsIndex) throws RemoteException {
+	
+		boolean same = false;
+		int i = 0;
+		
+		while (!same && i < listOfQAndAListsIndex) {
+			
+			if (queAndAnsObj.getQue_AnsList()[0] == listOfQAndALists[i].getQue_AnsList()[0]) {
+
+				if (queAndAnsObj.getQue_AnsList()[1] == listOfQAndALists[i].getQue_AnsList()[1]) {
+				
+					same = true;
+					
+				} else {
+				
+					i++;
+					continue;
+				
+				}
+									
+			} else {
+				
+				i++;
+				continue;
+				
+			}
+			
+		}
+		
+		return same;
+
+	}
+	
+	/**
+	 * Generates a new position for the correct answer (originally at position 2 in the que_AnsList), 
+	 * by random and immediately prior to being output to playerClient UI. It is only called from 
+	 * playQuiz(). 
+	 *  
+	 * @param questionNo   an int position of the current que_AnsList held in the listOfQAndALists 
+	 * @return             an int new position of the correct answer in the current que_AndAnsList.
+	 * 
+	 * (temporarily made public for JUnit test)  
+	 */
+	private int shuffleAnswers(int questionNo) throws RemoteException{
+		
+		Random randomObj = new Random();
+		int randomNewCorrectAnswerIndex = ORIGINAL_CORRECT_ANSWER_INDEX + randomObj.nextInt(4);
+
+		int temp = listOfQAndALists[questionNo].getQue_AnsList()[randomNewCorrectAnswerIndex];
+		listOfQAndALists[questionNo].getQue_AnsList()[randomNewCorrectAnswerIndex] = listOfQAndALists[questionNo].getQue_AnsList()[ORIGINAL_CORRECT_ANSWER_INDEX];
+		listOfQAndALists[questionNo].getQue_AnsList()[ORIGINAL_CORRECT_ANSWER_INDEX] = temp;
+	
+		return randomNewCorrectAnswerIndex;
+		
+	}
+	
+	/**
+	 * Increments the score for every correct answer given by the playerClient. 
+	 * (Only accepts the answer number from user, not the actual answer value).
+	 * 
+	 * @param userInputStr            the input from the playerClient
+	 * @param newCorrectAnswerIndex   the position of the correct answer after calling shuffleAnswers()
+	 * 
+	 * (temporarily made public for JUnit test)  
+	 */ 
+	private int keepScore(String userInputStr, int newCorrectAnswerIndex) throws RemoteException {
+	
+		int userInput = 0;
+	
+		try {
+
+			userInput = Integer.parseInt(userInputStr);
+				
+		} catch (NumberFormatException e) {
+			
+			System.out.println("A numeric input was required");
+		
+		}
+		
+		
+		if (userInput == newCorrectAnswerIndex - 1) {
+			
+				score++; 
+		
+		}
+		
+		int numberOfQuestionsAnswered = 1;
+		
+		return numberOfQuestionsAnswered;
+		
+	}
+	
+	/**
+	 * getter for score (primarily for JUnit)
+	 * 
+	 * @return int   the score
+	 * @throws RemoteException
+	 */
+	@Override
+	public int getScore() throws RemoteException {
+		
+		return score;
+		
+	}
+	
+	@Override
+	public int getTotalNoOfQuestions() throws RemoteException {
+	
+		return totalNoOfQuestions; 
+
+	}
 
 	@Override
-	public char[] updateView(char input) {
+	public int getNoOfAnswersPerQuestion() throws RemoteException {
+		
+		return NO_OF_ANSWERS_PER_QUESTION;
+
+	}
+
+	@Override
+	public char[] updateView(char input) throws RemoteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
+	public void setUpQuiz(int numberOfQuestions, int numberOfAnswersPerQuestion)
+			throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 public class QuizControllerImpl extends UnicastRemoteObject implements QuizController {
 
+	private boolean gameIsOver = true;
 	private QuizModelImpl quizModel = new QuizModelImpl(); 
 	
 	/**
@@ -122,5 +123,17 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 
 	}
 	
+	@Override
+	public boolean getGameIsOverStatus() {
+		
+		return gameIsOver;
+		
+	}
+
+	@Override
+	public char[] updateView(char input) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

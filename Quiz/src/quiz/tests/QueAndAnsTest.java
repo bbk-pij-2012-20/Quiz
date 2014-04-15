@@ -1,4 +1,4 @@
-package quizTests;
+package quiz.tests;
 
 import static org.junit.Assert.*;
 

@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+
 /**
  * A class which makes quizzes in the form of a list of 
  * question and answers lists and a unique id# for each.
@@ -16,15 +17,8 @@ public class QuizFactoryImpl implements QuizFactory {
 	private int noOfQuestionsPerQuiz; 
 	private QueAndAns[] quiz;
 
-	/**
-	 * Generates three quizzes, one with 6 questions, one with 8 questions
-	 * and one with 10 questions. Calls generateAndStoreId() 
-	 * 
-	 * @return HashMap              map of quizIds Integers and quizzes (an array with 6,8, or 10 questions, 
-	 *                              with 4 answers each).
-	 * @throws RemoteException
-	 */
-	protected Map<Integer,QueAndAns[]> make3Quizzes() throws RemoteException {
+	@Override
+	public Map<Integer,QueAndAns[]> make3Quizzes() throws RemoteException {
 		
 		Map<Integer,QueAndAns[]> quizAndIds = new HashMap<>();
 		
@@ -70,11 +64,11 @@ public class QuizFactoryImpl implements QuizFactory {
 	}
 	
 	/**
-	 * Checks if currently generated question has already been made and stored (in listOfQAndAListsIndex)
+	 * Checks if currently generated question has already been made and stored (in quizIndex)
 	 * 
-	 * @param queAndAnsObj            a queAndAnsObj, created and passed from makeListOfQAndALists()
-	 * @param listOfQAndAListsIndex   an int that is the position of the current queAndAnsObj created and passed from makeListOfQAndALists()  
-	 * @return                        true if the question was already created and stored at another position in the listOfQAndALists
+	 * @param queAndAnsObj      a queAndAnsObj, created and passed from makeQuiz()
+	 * @param quizIndex         the int position of the current queAndAnsObj created and passed from makeQuiz()  
+	 * @return                  true if the question was already created and stored at another position in the quiz
 	 * 
 	 * (temporarily made public for JUnit test)  
 	 */
@@ -117,7 +111,7 @@ public class QuizFactoryImpl implements QuizFactory {
 	 * 
 	 * @param listOfQAndALists   a QueAndAns[] to be stored with the id# 
 	 */
-	private Map<Integer,QueAndAns[]> generateIdMap(QueAndAns[] quiz) {
+	private Map<Integer,QueAndAns[]> generateIdMap(QueAndAns[] quiz) throws RemoteException {
 		
 		int id = 0;
 		Map<Integer,QueAndAns[]> quizAndIds = new HashMap<>();

@@ -9,30 +9,21 @@ import java.io.Serializable;
 
 public class QuizControllerImpl extends UnicastRemoteObject implements QuizController {
 
-	private boolean gameIsOver = true;
+	private boolean gameIsOver = false;
 	private String view = "";
 	private String userInput = "";
 	private int quizChoice = 0;
 	private QuizFactory quizFactory = new QuizFactoryImpl();
 	private final int ORIGINAL_CORRECT_ANSWER_INDEX = 2;
-
 	private int score = 0;
-
 	private static final long serialVersionUID = 4592620853082060733L;
-
+	private Map<Integer,QueAndAns[]> quizAndIds = new HashMap<>();
+	
 	/**
-	 * empty constructor must be explicitly written for RMI
-	 * @throws RemoteException
+	 * Empty constructor must be explicitly written for RMI to work.
+	 * @throws RemoteException  (in case anything goes wrong with network connectivity)
 	 */
 	public QuizControllerImpl() throws RemoteException {}
-
-	
-	@Override
-	public void setUserInput(String userInput) throws RemoteException {
-	
-		this.userInput = userInput;
-		
-	}
 	
 	@Override
 	public void processPlayerInput() {
@@ -91,12 +82,12 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 */
 
 		updateView("------------------- NEW GAME -------------------\n\nThere are " 
-		+ quizFactory.getTotalNoOfQuestions() + " questions to answer. \nSelect one of the " 
+		+ quizFactory.getNoOfQuestionsPerQuiz() + " questions to answer. \nSelect one of the " 
 		+ quizFactory.getNoOfAnswersPerQuestion() + " answers\n\n ------------------------------------------------\n");
 		
 		if (startGame()) {
 			
-			makeListOfQAndALists();
+			quizAndIds = quizFactory.make3Quizzes();
 		
 		} else {
 			
@@ -105,28 +96,52 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 		}
 		
 		int noOfQuestionsAnswered = 0;
-		int newCorrectAnswerIndex = 0;
-		
-		for (int questionNo = 0; questionNo < quizFactory.getTotalNoOfQuestions(); questionNo++) {
+		int newCorrectAnswerIndex = 0;	
+		int questionNo = 0;
+	
+		do {
 			
-			/*			System.out.print("Question#");
-			System.out.println(questionNo + 1 +":");
-			System.out.println(listOfQAndALists[questionNo].toString());
-			System.out.println("Pick one: ");
-*/
 			updateView("Question#");
 			updateView(questionNo + 1 +":\n");
-			updateView(quizFactory.getListOfQAndALists()[questionNo].toString()+"\n");
+			updateView(quizFactory.getQuiz()[questionNo].toString()+"\n");
 			updateView("Pick one: \n");
-
-			newCorrectAnswerIndex = shuffleAnswers(questionNo);
-
-			for (int answerNo = 0; answerNo < quizFactory.getNoOfAnswersPerQuestion(); answerNo++) {
 			
-//				System.out.println(answerNo + 1 + ".  " + listOfQAndALists[questionNo].getQue_AnsList()[answerNo+2]);
-				updateView(answerNo + 1 + ".  " + quizFactory.getListOfQAndALists()[questionNo].getQue_AnsList()[answerNo+2]+"\n");
+			newCorrectAnswerIndex = shuffleAnswers(questionNo);
+			
+			for (int answerNo = 0; answerNo < quizFactory.getNoOfAnswersPerQuestion(); answerNo++) {
+				
+//				System.out.println(answerNo + 1 + ".  " + quiz[questionNo].getQue_AnsList()[answerNo+2]);
+				updateView(answerNo + 1 + ".  " + quizFactory.getQuiz()[questionNo].getQue_AnsList()[answerNo+2]+"\n");
 				
 			}
+
+			String inputConsoleReadLine = getUserInput();
+			noOfQuestionsAnswered += keepScore(inputConsoleReadLine, newCorrectAnswerIndex);
+
+			questionNo++;
+			
+		} while (!gameIsOver && questionNo < quizFactory.getNoOfQuestionsPerQuiz());
+		
+//		for (int questionNo = 0; questionNo < quizFactory.getNoOfQuestionsPerQuiz(); questionNo++) {
+			
+/*			System.out.print("Question#");
+			System.out.println(questionNo + 1 +":");
+			System.out.println(quiz[questionNo].toString());
+			System.out.println("Pick one: ");
+*/
+//			updateView("Question#");
+//			updateView(questionNo + 1 +":\n");
+//			updateView(quizFactory.getQuiz()[questionNo].toString()+"\n");
+//			updateView("Pick one: \n");
+
+//			newCorrectAnswerIndex = shuffleAnswers(questionNo);
+
+//			for (int answerNo = 0; answerNo < quizFactory.getNoOfAnswersPerQuestion(); answerNo++) {
+			
+//				System.out.println(answerNo + 1 + ".  " + quiz[questionNo].getQue_AnsList()[answerNo+2]);
+//				updateView(answerNo + 1 + ".  " + quizFactory.getquiz()[questionNo].getQue_AnsList()[answerNo+2]+"\n");
+				
+//			}
 			
 //			String inputConsoleReadLine = System.console().readLine();
 //			String inputConsoleReadLine = "1";
@@ -134,12 +149,12 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 
 			noOfQuestionsAnswered += keepScore(inputConsoleReadLine, newCorrectAnswerIndex);
 			
-		}
+//		}
 		
-		if (noOfQuestionsAnswered == quizFactory.getTotalNoOfQuestions()) {
+		if (noOfQuestionsAnswered == quizFactory.getNoOfQuestionsPerQuiz()) {
 			
 //			System.out.printf("You answered %d out of %d correctly \n", score, totalNoOfQuestions);
-			updateView("You answered " + score + " out of "+ quizFactory.getTotalNoOfQuestions() + "correctly \n");
+			updateView("You answered " + score + " out of "+ quizFactory.getNoOfQuestionsPerQuiz() + "correctly \n");
 
 			startGame();
 			
@@ -158,7 +173,7 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 	 * Input y resumes with playQuiz(), otherwise terminates program.
 	 * 
 	 * @return    true if user enters any word beginning with y.
-	 * 
+	 * @throws RemoteException (in case anything goes wrong with network connectivity)
 	 * (temporarily made public for JUnit test)
 	 */
 	private boolean startGame() throws RemoteException {
@@ -189,14 +204,6 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 		return start;
 
 	}
-	
-	@Override
-	public boolean getGameIsOverStatus() throws RemoteException{
-		
-		return gameIsOver;
-		
-	}
-	
 
 	/**
 	 * Generates a new position for the correct answer (originally at position 2 in the que_AnsList), 
@@ -205,7 +212,7 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 	 *  
 	 * @param questionNo   an int position of the current que_AnsList held in the listOfQAndALists 
 	 * @return             an int new position of the correct answer in the current que_AndAnsList.
-	 * 
+	 * @throws RemoteException (in case anything goes wrong with network connectivity)
 	 * (temporarily made public for JUnit test)  
 	 */
 	private int shuffleAnswers(int questionNo) throws RemoteException{
@@ -213,9 +220,9 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 		Random randomObj = new Random();
 		int randomNewCorrectAnswerIndex = ORIGINAL_CORRECT_ANSWER_INDEX + randomObj.nextInt(4);
 
-		int temp = quizFactory.getListOfQAndALists()[questionNo].getQue_AnsList()[randomNewCorrectAnswerIndex];
-		quizFactory.getListOfQAndALists()[questionNo].getQue_AnsList()[randomNewCorrectAnswerIndex] = listOfQAndALists[questionNo].getQue_AnsList()[ORIGINAL_CORRECT_ANSWER_INDEX];
-		quizFactory.getListOfQAndALists()[questionNo].getQue_AnsList()[ORIGINAL_CORRECT_ANSWER_INDEX] = temp;
+		int temp = quizFactory.getQuiz()[questionNo].getQue_AnsList()[randomNewCorrectAnswerIndex];
+		quizFactory.getQuiz()[questionNo].getQue_AnsList()[randomNewCorrectAnswerIndex] = quizFactory.getQuiz()[questionNo].getQue_AnsList()[ORIGINAL_CORRECT_ANSWER_INDEX];
+		quizFactory.getQuiz()[questionNo].getQue_AnsList()[ORIGINAL_CORRECT_ANSWER_INDEX] = temp;
 	
 		return randomNewCorrectAnswerIndex;
 		
@@ -227,7 +234,7 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 	 * 
 	 * @param userInputStr            the input from the playerClient
 	 * @param newCorrectAnswerIndex   the position of the correct answer after calling shuffleAnswers()
-	 * 
+	 * @throws RemoteException (in case anything goes wrong with network connectivity)
 	 * (temporarily made public for JUnit test)  
 	 */ 
 	private int keepScore(String userInputStr, int newCorrectAnswerIndex) throws RemoteException {
@@ -261,12 +268,33 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 	 * getter for score (primarily for JUnit)
 	 * 
 	 * @return int   the score
-	 * @throws RemoteException
+	 * @throws RemoteException (in case anything goes wrong with network connectivity)
 	 */
 	@Override
-	public int getScore() throws RemoteException {
+	public int getScore(int idOf) throws RemoteException {
 		
 		return score;
+		
+	}
+
+
+	public synchronized int endGame(int idInput) {
+		
+		return ; 
+		
+	}
+
+	@Override
+	public void setUserInput(String userInput) throws RemoteException {
+	
+		this.userInput = userInput;
+		
+	}
+
+	@Override
+	public boolean getGameIsOverStatus() throws RemoteException{
+		
+		return gameIsOver;
 		
 	}
 	

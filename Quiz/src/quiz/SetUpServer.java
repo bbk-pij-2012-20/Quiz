@@ -2,6 +2,7 @@ package quiz;
 
 import java.rmi.server.UnicastRemoteObject;
 import java.rmi.RemoteException;
+import java.util.Map;
 import java.io.Serializable;
 
 public class SetUpServer extends UnicastRemoteObject implements SetUpService {
@@ -9,14 +10,9 @@ public class SetUpServer extends UnicastRemoteObject implements SetUpService {
 	private static final long serialVersionUID = -6033300511237555304L;
 	private QuizControllerImpl quizController = new QuizControllerImpl();
 	private QuizFactoryImpl quizFactory = new QuizFactoryImpl();
+	private Map<Integer,QueAndAns[]> quizAndIds;
 
 	protected SetUpServer() throws RemoteException {}
-
-	@Override
-	public boolean isGameOver() throws RemoteException {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public void processInput(String input) throws RemoteException {
@@ -25,7 +21,7 @@ public class SetUpServer extends UnicastRemoteObject implements SetUpService {
 		
 		if (input.charAt(0) == 'y') {
 			
-			make3Quizzes();
+			quizFactory.make3Quizzes();
 		
 		} else {
 			
@@ -35,31 +31,17 @@ public class SetUpServer extends UnicastRemoteObject implements SetUpService {
 				
 			} catch (NumberFormatException e) {
 				
-				System.out.println("please enter a number");
+				System.out.println("..was that meant to be a number? (Try again)");
 				e.printStackTrace();
 				
 			} finally {
 				
-				endGame(idInput);
+				System.out.println(quizController.endGame(idInput));
 				
 			}		
 		
 		}
 	
-	}
-	
-	@Override
-	public void make3Quizzes() throws RemoteException {
-	
-		quizFactory.make3Quizzes();
-		
-	}
-
-	@Override
-	public int endGame(int idOfQuizToStop) throws RemoteException {
-		// TODO Auto-generated method stub
-		return quizController.getScore();
-		
 	}
 
 }

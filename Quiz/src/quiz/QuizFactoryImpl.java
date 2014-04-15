@@ -11,48 +11,61 @@ import java.util.Random;
  * @author Shahin
  */
 public class QuizFactoryImpl implements QuizFactory {
-	
-	private Map<Integer,QueAndAns[]> quizAndIds;
-	private final int NO_OF_ANSWERS_PER_QUESTION = 4;
-	private int totalNoOfQuestions; 
-	private QueAndAns[] listOfQAndALists;
 
-	protected void make3Quizzes() throws RemoteException {
+	private final int NO_OF_ANSWERS_PER_QUESTION = 4;
+	private int noOfQuestionsPerQuiz; 
+	private QueAndAns[] quiz;
+
+	/**
+	 * Generates three quizzes, one with 6 questions, one with 8 questions
+	 * and one with 10 questions. Calls generateAndStoreId() 
+	 * 
+	 * @return HashMap              map of quizIds Integers and quizzes (an array with 6,8, or 10 questions, 
+	 *                              with 4 answers each).
+	 * @throws RemoteException
+	 */
+	protected Map<Integer,QueAndAns[]> make3Quizzes() throws RemoteException {
 		
-		for (int i = 0; i < 3; i++) {
+		Map<Integer,QueAndAns[]> quizAndIds = new HashMap<>();
+		
+		for (int noOfQuestions=6; noOfQuestions<=10; noOfQuestions=noOfQuestions+2) {
 			
-			makeListOfQAndALists(2*(i+1));
+			quizAndIds = makeQuiz(noOfQuestions);
 			
 		}
+		
+		return quizAndIds;
 		
 	}
 	
 	/**
-	 * Fills the listOfQueAndAnsLists with que_AndLists with as many as the setUpClient has specified. 
+	 * Fills a list with question-and-answers lists (called que_AnsList). The setUp
+	 * client sets up the number of questions per quiz (6, 8 or 10) according to 
+	 * the selection made by the playerClient. 
 	 * Assures no repeated questions by calling isRepeatedQuestion(QueAndAns, int). 
 	 * 
 	 * (temporarily made public for JUnit test)
 	 */
-	private synchronized void makeListOfQAndALists(int noOfQuestions) throws RemoteException {
+	private synchronized Map<Integer,QueAndAns[]> makeQuiz(int noOfQuestions) throws RemoteException {
 		
-		this.totalNoOfQuestions = noOfQuestions;
-		listOfQAndALists = new QueAndAns[totalNoOfQuestions];
+		this.noOfQuestionsPerQuiz = noOfQuestions;
+		quiz = new QueAndAns[this.noOfQuestionsPerQuiz];
 		QueAndAnsImpl queAndAnsObj;
 
-		for (int i = 0; i < listOfQAndALists.length; i++) {
+		for (int quizIndex=0; quizIndex<quiz.length; quizIndex++) {
 		
 			queAndAnsObj = new QueAndAnsImpl(NO_OF_ANSWERS_PER_QUESTION);
-			listOfQAndALists[i] = queAndAnsObj;			
+			quiz[quizIndex] = queAndAnsObj;			
 				
-			if (isRepeatedQuestion(queAndAnsObj, i)) {
+			if (isDuplicateQuestion(queAndAnsObj, quizIndex)) {
 			
-				i--;
+				quizIndex--;
 				
 			}
 				
 		}
 		
-		generateAndStoreId(listOfQAndALists);
+		return generateIdMap(quiz);
 		
 	}
 	
@@ -65,18 +78,18 @@ public class QuizFactoryImpl implements QuizFactory {
 	 * 
 	 * (temporarily made public for JUnit test)  
 	 */
-	private boolean isRepeatedQuestion(QueAndAnsImpl queAndAnsObj, int listOfQAndAListsIndex) throws RemoteException {
+	private boolean isDuplicateQuestion(QueAndAnsImpl queAndAnsObj, int quizIndex) throws RemoteException {
 	
-		boolean same = false;
+		boolean questionIsDuplicate = false;
 		int i = 0;
 		
-		while (!same && i < listOfQAndAListsIndex) {
+		while (!questionIsDuplicate && i < quizIndex) {
 			
-			if (queAndAnsObj.getQue_AnsList()[0] == listOfQAndALists[i].getQue_AnsList()[0]) {
+			if (queAndAnsObj.getQue_AnsList()[0] == quiz[i].getQue_AnsList()[0]) {
 
-				if (queAndAnsObj.getQue_AnsList()[1] == listOfQAndALists[i].getQue_AnsList()[1]) {
+				if (queAndAnsObj.getQue_AnsList()[1] == quiz[i].getQue_AnsList()[1]) {
 				
-					same = true;
+					questionIsDuplicate = true;
 					
 				} else {
 				
@@ -94,7 +107,7 @@ public class QuizFactoryImpl implements QuizFactory {
 			
 		}
 		
-		return same;
+		return questionIsDuplicate;
 
 	}
 	
@@ -104,10 +117,10 @@ public class QuizFactoryImpl implements QuizFactory {
 	 * 
 	 * @param listOfQAndALists   a QueAndAns[] to be stored with the id# 
 	 */
-	private void generateAndStoreId(QueAndAns[] listOfQAndALists) {
+	private Map<Integer,QueAndAns[]> generateIdMap(QueAndAns[] quiz) {
 		
 		int id = 0;
-		quizAndIds = new HashMap<>();
+		Map<Integer,QueAndAns[]> quizAndIds = new HashMap<>();
 		Random randomObj = new Random();
 		
 		do {
@@ -116,28 +129,30 @@ public class QuizFactoryImpl implements QuizFactory {
 		
 		} while (quizAndIds.containsKey(id));
 
-		quizAndIds.put(id,listOfQAndALists);
+		quizAndIds.put(id, quiz);
+		
+		return quizAndIds;
 
 	}
 	
 	@Override
-	public QueAndAns[] getListOfQAndALists() throws RemoteException{
+	public QueAndAns[] getQuiz() throws RemoteException{
 		
-		return listOfQAndALists;
-		
-	}
-	
-	@Override
-	public void setListOfQAndALists(QueAndAns[] listOfQAndALists) throws RemoteException{
-		
-		this.listOfQAndALists = listOfQAndALists;
+		return quiz;
 		
 	}
 	
 	@Override
-	public int getTotalNoOfQuestions() throws RemoteException {
+	public void setQuiz(QueAndAns[] quiz) throws RemoteException{
+		
+		this.quiz = quiz;
+		
+	}
 	
-		return totalNoOfQuestions; 
+	@Override
+	public int getNoOfQuestionsPerQuiz() throws RemoteException {
+	
+		return noOfQuestionsPerQuiz; 
 
 	}
 

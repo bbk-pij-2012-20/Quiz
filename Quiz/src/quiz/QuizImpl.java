@@ -5,6 +5,7 @@ public class QuizImpl implements Quiz {
 	private int noOfQuestionsPerQuiz; 
 	private int quizId = 0;
 	private int score = 0;
+	private int numberOfQuestionsAnswered = 0;
 	private QueAndAns[] queAndAns;
 	private boolean quizIsActive = false;
 	
@@ -48,11 +49,25 @@ public class QuizImpl implements Quiz {
 		return score;
 		
 	}
-	
+
 	@Override
 	public void incrementScore() {
 		
 		score++;
+		incrementNumberOfQuestionsAnswered();
+		
+	}
+	
+	private void incrementNumberOfQuestionsAnswered() {
+		
+		numberOfQuestionsAnswered++;
+		
+	}
+	
+	@Override
+	public int getNumberOfQuestionsAnswered() {
+		
+		return numberOfQuestionsAnswered;
 		
 	}
 	

@@ -23,7 +23,8 @@ public class PlayerClient implements Serializable{
 			
 			do {
 					
-					System.out.println(playerService.processInput(scan.nextInt()));
+					playerService.processInput(scan.nextInt());
+					System.out.println(playerService.getPlayerView());
 						
 			} while (playerService.isCurrentQuizActive());		
 			

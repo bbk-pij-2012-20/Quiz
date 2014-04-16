@@ -1,10 +1,9 @@
 package quiz;
 
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.io.Serializable;
 
-public interface QuizController extends Remote {
+public interface QuizController extends Serializable {
 
 	/**
 	 * Begins chosen quiz. It calls the private method 
@@ -30,15 +29,13 @@ public interface QuizController extends Remote {
 	 */
 	String getView() throws RemoteException;
 
-
 	/**
-	 * getter for quiz with given id#
-	 *  
-	 * @param quizId
-	 * @return
-	 * @throws RemoteException
+	 * getter for score (primarily for JUnit)
+	 * 
+	 * @return String   a  string representation of the score out of how many attempted 
+	 * @throws RemoteException (in case anything goes wrong with network connectivity)
 	 */
-	int getScore(int quizId) throws RemoteException;
+	String getScoreOutOf(int quizId) throws RemoteException;
 
 	/**
 	 * Stops quiz with corresponding id#, and returns the score to the user.

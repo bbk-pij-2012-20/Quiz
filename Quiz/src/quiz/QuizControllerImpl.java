@@ -3,9 +3,7 @@ package quiz;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.io.Serializable;
 
@@ -16,14 +14,13 @@ import java.io.Serializable;
  * 
  * @author Shahin
  */
-public class QuizControllerImpl extends UnicastRemoteObject implements QuizController {
+public class QuizControllerImpl implements QuizController, Serializable {
 
 	private static final long serialVersionUID = 4592620853082060733L;
 	private final int ORIGINAL_CORRECT_ANSWER_INDEX = 2;
 	private final int ANSWER_INDEX_START = 2;
 	private String view = "";
 	private Quiz currentQuiz = null;
-	private QuizFactory quizFactory;
 	private List<Quiz> quizList;
 	
 	/**
@@ -32,7 +29,6 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 	 */
 	public QuizControllerImpl() throws RemoteException {
 		
-		quizFactory = new QuizFactoryImpl();
 		quizList = new ArrayList<>();
 	
 	}
@@ -91,7 +87,7 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 				
 			}
 
-			noOfQuestionsAnswered += keepScore(answerToSubmit, newCorrectAnswerIndex);
+			keepScore(answerToSubmit, newCorrectAnswerIndex);
 			questionNo++;
 			
 		} while (currentQuiz.getQuizIsActive() && questionNo < currentQuiz.getNoOfQuestionsPerQuiz());
@@ -183,16 +179,38 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 	 * for setUpClient
 	 */
 	public synchronized void stopQuiz(int quizId) throws RemoteException {
+			
+		try {
+			
+			if (!containsQuizWithId(quizId)) {
 				
-		for (Quiz quiz : quizList) {
-		
-			if (quiz.getQuizId() == quizId) {
-				
-				quiz.setQuizIsActive(false);
-				updateView("quiz with id# " + quizId + " is now stopped\n");
-				updateView("Your score was " + getScore(quizId));
+				throw new NullPointerException();
 				
 			}
+			
+			for (Quiz quiz : quizList) {
+		
+				if (quiz.getQuizId() == quizId) {
+				
+					quiz.setQuizIsActive(false);
+					updateView("\n-------------------------------------------\n"
+							+ "quiz with id# " + quizId + " is now stopped\n");
+					updateView("Player scored " + getScoreOutOf(quizId)
+							+ "\n-------------------------------------------\n");
+				
+				} else {
+					
+					
+					
+				}
+			
+			} 
+			
+		} catch (NullPointerException e) {
+			
+			String ExceptionMsg = "No quiz by that id# exists in QuizController's quizList";
+			System.out.println(ExceptionMsg);
+			updateView(ExceptionMsg);
 			
 		}
 		
@@ -230,41 +248,32 @@ public class QuizControllerImpl extends UnicastRemoteObject implements QuizContr
 	 * @throws RemoteException (in case anything goes wrong with network connectivity)
 	 * (temporarily made public for JUnit test)  
 	 */ 
-	private int keepScore(int userInput, int newCorrectAnswerIndex) throws RemoteException {
+	private void keepScore(int userInput, int newCorrectAnswerIndex) throws RemoteException {
 		
 		if (userInput == newCorrectAnswerIndex - 1) {
 			
 			currentQuiz.incrementScore(); 
 		
 		}
-		
-		int numberOfQuestionsAnswered = 1;
-		return numberOfQuestionsAnswered;
-		
+			
 	}
 	
-	/**
-	 * getter for score (primarily for JUnit)
-	 * 
-	 * @return int   the score
-	 * @throws RemoteException (in case anything goes wrong with network connectivity)
-	 */
 	@Override
-	public int getScore(int quizId) throws RemoteException {
+	public String getScoreOutOf(int quizId) throws RemoteException {
 		
-		int score = 0;
+		String scoreOutOf = "";
 		
 		for (Quiz quiz : quizList) {
 			
 			if (quiz.getQuizId() == quizId) {
 				
-				score = quiz.getScore();
-			
+				scoreOutOf = quiz.getScore() + " out of " + quiz.getNumberOfQuestionsAnswered();
+				
 			}
 				
 		}
 
-		return score;
+		return scoreOutOf;
 		
 	}
 

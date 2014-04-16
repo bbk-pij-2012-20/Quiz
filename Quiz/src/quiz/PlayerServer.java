@@ -13,6 +13,7 @@ public class PlayerServer extends UnicastRemoteObject implements PlayerService, 
 
 	private static final long serialVersionUID = 7708290464329235363L;
 	private QuizControllerImpl quizController = new QuizControllerImpl();
+	private String playerView = "";
 	
 	protected PlayerServer() throws RemoteException {}
 
@@ -20,16 +21,24 @@ public class PlayerServer extends UnicastRemoteObject implements PlayerService, 
 	public String getGameList() throws RemoteException {
 		
 		return "Choose one from the following three quiz options:\n"
-				+ "1. 6 questions\n3. 8 questions\n 3. 10 questions";
+				+ "1. 6 questions \n"
+				+ "2. 8 questions \n"
+				+ "3. 10 questions";
 		
 	}
 	
 	@Override
-	public String processInput(int userInput) throws RemoteException {
+	public void processInput(int userInput) throws RemoteException {
 					
 		quizController.playQuiz(userInput);
-		return quizController.getView();
+		playerView = quizController.getView();
 	
+	}
+	
+	public String getPlayerView() {
+		
+		return playerView;
+		
 	}
 	
 	@Override

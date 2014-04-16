@@ -1,8 +1,6 @@
 package quiz;
 
 import java.rmi.RemoteException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 /**

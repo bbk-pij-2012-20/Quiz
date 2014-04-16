@@ -48,10 +48,23 @@ public interface Quiz {
 	/**
 	 * getter for score
 	 * 
-	 * @return
+	 * @return the score number as a string embedded within worded message to client
 	 */
 	int getScore();
 
+	
+	/**
+	 * increments the number of correctly answered questions 
+	 * and indirectly increments number of question attempted. 
+	 * 
+	 */
 	void incrementScore();
+	
+	/**
+	 * getter for numberOfQuestionsAnswered
+	 * 
+	 * @return
+	 */
+	int getNumberOfQuestionsAnswered();
 
 }

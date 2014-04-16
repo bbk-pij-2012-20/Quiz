@@ -2,14 +2,14 @@ package quiz;
 
 import java.rmi.server.UnicastRemoteObject;
 import java.rmi.RemoteException;
-import java.util.Map;
 import java.io.Serializable;
 
-public class SetUpServer extends UnicastRemoteObject implements SetUpService {
+public class SetUpServer extends UnicastRemoteObject implements SetUpService, Serializable {
 
 	private static final long serialVersionUID = -6033300511237555304L;
 	private QuizControllerImpl quizController = new QuizControllerImpl();
 	private QuizFactoryImpl quizFactory = new QuizFactoryImpl();
+	private String setUpView = "";
 
 	protected SetUpServer() throws RemoteException {}
 
@@ -36,12 +36,19 @@ public class SetUpServer extends UnicastRemoteObject implements SetUpService {
 			} finally {
 				
 				quizController.stopQuiz(idInput);
-				System.out.println(quizController.getView());
 				
 			}		
 		
 		}
+		
+		setUpView = quizController.getView();
+			
+	}
 	
+	public String getSetUpView() throws RemoteException {
+		
+		return setUpView;
+		
 	}
 
 }

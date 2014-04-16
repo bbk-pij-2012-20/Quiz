@@ -147,8 +147,8 @@ public class QuizControllerImpl implements QuizController, Serializable {
 		switch (quizToActivate) {
 		
 			case 1 : noOfQuestions = 6; break;
-			case 2 : noOfQuestions = 6; break;
-			case 3 : noOfQuestions = 6; break;
+			case 2 : noOfQuestions = 8; break;
+			case 3 : noOfQuestions = 10; break;
 			default: throw new IllegalArgumentException("not 1 2 or 3");
 		
 		}

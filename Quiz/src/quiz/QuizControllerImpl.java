@@ -197,10 +197,6 @@ public class QuizControllerImpl implements QuizController, Serializable {
 					updateView("Player scored " + getScoreOutOf(quizId)
 							+ "\n-------------------------------------------\n");
 				
-				} else {
-					
-					
-					
 				}
 			
 			} 

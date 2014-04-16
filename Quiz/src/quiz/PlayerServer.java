@@ -11,31 +11,31 @@ import java.io.Serializable;
  */
 public class PlayerServer extends UnicastRemoteObject implements PlayerService, Serializable {
 
-	private QuizControllerImpl quizController = new QuizControllerImpl();
 	private static final long serialVersionUID = 7708290464329235363L;
-
+	private QuizControllerImpl quizController = new QuizControllerImpl();
+	
 	protected PlayerServer() throws RemoteException {}
 
 	@Override
 	public String getGameList() throws RemoteException {
 		
 		return "Choose one from the following three quiz options:\n"
-				+ "1. 2 questions\n3. 5 questions\n 3. 10 questions";
+				+ "1. 6 questions\n3. 8 questions\n 3. 10 questions";
 		
 	}
-
+	
 	@Override
-	public String updateView(char input) throws RemoteException {
-		
-		quizController.setUserInput(""+input);
+	public String processInput(int userInput) throws RemoteException {
+					
+		quizController.playQuiz(userInput);
 		return quizController.getView();
 	
 	}
-
+	
 	@Override
-	public boolean isGameOver() throws RemoteException {
+	public boolean isCurrentQuizActive() throws RemoteException{
 		
-		return quizController.getGameIsOverStatus(); 
+		return quizController.isCurrentQuizActive();
 		
 	}
 

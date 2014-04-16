@@ -17,21 +17,20 @@ public interface PlayerService extends Remote, Serializable {
 	
 	/**
 	 * Takes an input from the player and passes it to QuizController 
-	 * which processes it and returns a String to be printed out to
-	 * the player's UI (client-side). 
+	 * to load the chosen quiz to play. It then is also used to process 
+	 * answers submitted by playerClient and return the next question.
 	 * 
-	 * @param readLine   the player's input to the UI which is only ever a single character
-	 * @return a String  which is returned to be output to UI
+	 * @param userInput  an int input 
+	 * @return a String  which is returned to be output to UI via view
 	 */
-	String updateView(char input) throws RemoteException;
+	String processInput(int userInput) throws RemoteException;
 
 	/**
-	 * checks with QuizController on status of the current quiz game. 
-	 * While the game is not over, it expects an input to updateView(String)
+	 * Checks with QuizController on status of the current quiz game. 
+	 * While active, it expects an input to processInput(int)
 	 * 
-	 * 
-	 * @return
+	 * @return true if current game is not active.
 	 */
-	boolean isGameOver() throws RemoteException;
+	boolean isCurrentQuizActive() throws RemoteException;
 	
 }

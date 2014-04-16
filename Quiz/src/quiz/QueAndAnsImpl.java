@@ -7,30 +7,25 @@ public class QueAndAnsImpl implements QueAndAns {
 
 	private int	questionListIndex;
 	private int	countryListIndex;
-	private QuizDatabaseImpl database;
-	private int noOfAnswersPerQuestion;
+	private final int NO_OF_ANSWERS_PER_QUESTION = 4;
+	private final int NO_OF_ELEMENTS_PER_QUESTION = 2;
 	private int[] que_AnsList;
-	
+	private QuizDatabaseImpl database;
+		
 	/**
-	 * Constructor takes a number of answers per question, to be specified
-	 * by the setUpClient.
+	 * Constructor initialises the que_AnsList to a question and 4
+	 * answers. (note: each question has 2 parts)
 	 * 
 	 * @param noOfAnswersPerQuestion
 	 */
-	public QueAndAnsImpl(int noOfAnswersPerQuestion) {
+	public QueAndAnsImpl() {
 
-		this.noOfAnswersPerQuestion = noOfAnswersPerQuestion;
-		que_AnsList	= new int[2+noOfAnswersPerQuestion];
+		que_AnsList	= new int[NO_OF_ELEMENTS_PER_QUESTION+NO_OF_ANSWERS_PER_QUESTION];
 		database = new QuizDatabaseImpl();
 		generateQueAndAnsList();
 		
 	}
 	
-	/**
-	 * empty constructor
-	 */
-	public QueAndAnsImpl(){}
-
 	@Override
 	public int[] getQue_AnsList() {
 
@@ -253,6 +248,13 @@ public class QueAndAnsImpl implements QueAndAns {
 	
 		return "" + database.getQuestion(que_AnsList[0]) + database.getCountry(que_AnsList[1]);
 	
+	}
+	
+	@Override
+	public int getNoOfAnswersPerQuestion() {
+		
+		return NO_OF_ANSWERS_PER_QUESTION;
+		
 	}
 	
 }

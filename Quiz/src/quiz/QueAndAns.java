@@ -51,4 +51,11 @@ public interface QueAndAns {
 	 */
 	void setQue_AnsList(int[] que_AnsList);
 
+	/**
+	 * Getter for NoOfAnswersPerQuestion
+	 * 
+	 * @return
+	 */
+	int getNoOfAnswersPerQuestion();
+
 }

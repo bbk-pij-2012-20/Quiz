@@ -6,7 +6,6 @@ import java.rmi.Remote;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Scanner;
-//import java.io.Serializable;
 
 public class PlayerClient implements Serializable{
 	
@@ -23,10 +22,10 @@ public class PlayerClient implements Serializable{
 			System.out.println("Choose which game to play (1/2/3): "+playerService.getGameList());
 			
 			do {
-					char playerInput = scan.next().trim().toLowerCase().charAt(0);
-					System.out.println(playerService.updateView(playerInput));
+					
+					System.out.println(playerService.processInput(scan.nextInt()));
 						
-			} while (!playerService.isGameOver());		
+			} while (playerService.isCurrentQuizActive());		
 			
 		} catch (RemoteException e) {
 		

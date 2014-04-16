@@ -10,7 +10,6 @@ public class SetUpServer extends UnicastRemoteObject implements SetUpService {
 	private static final long serialVersionUID = -6033300511237555304L;
 	private QuizControllerImpl quizController = new QuizControllerImpl();
 	private QuizFactoryImpl quizFactory = new QuizFactoryImpl();
-	private Map<Integer,QueAndAns[]> quizAndIds;
 
 	protected SetUpServer() throws RemoteException {}
 
@@ -36,7 +35,8 @@ public class SetUpServer extends UnicastRemoteObject implements SetUpService {
 				
 			} finally {
 				
-				System.out.println(quizController.endGame(idInput));
+				quizController.stopQuiz(idInput);
+				System.out.println(quizController.getView());
 				
 			}		
 		

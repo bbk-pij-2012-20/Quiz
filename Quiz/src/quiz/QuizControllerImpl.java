@@ -1,7 +1,6 @@
 package quiz;
 
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -303,7 +302,6 @@ public class QuizControllerImpl implements QuizController, Serializable {
 		
 	}
 	
-	//for setUpClient
 	@Override
 	public void addNewQuiz(Quiz newQuiz) {
 		
@@ -311,7 +309,6 @@ public class QuizControllerImpl implements QuizController, Serializable {
 		
 	}
 
-	// for playerClient
 	@Override
 	public void updateView(String view) throws RemoteException {
 	
@@ -319,7 +316,6 @@ public class QuizControllerImpl implements QuizController, Serializable {
 		
 	}
 	
-	// for playerClient
 	@Override
 	public String getView() throws RemoteException {
 	

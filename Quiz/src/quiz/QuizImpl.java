@@ -110,5 +110,24 @@ public class QuizImpl implements Quiz {
 		this.quizIsActive = quizIsActive;
 		
 	}
+	
+	@Override
+	public String toString() {
+		
+		String status = "";
+		
+		if (!quizIsActive) {
+			
+			status = "not"; 
+			
+		}
+	
+		return "Quiz id# " + quizId + "has " + noOfQuestionsPerQuiz 
+				+ " questions in total.\n" + "It is currently " 
+				+ status + " active.\n"
+				+ "Player scored " + score + " out of " 
+				+ numberOfQuestionsAnswered + " attempted.\n";
+		
+	}
 
 }

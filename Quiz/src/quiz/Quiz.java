@@ -66,5 +66,13 @@ public interface Quiz {
 	 * @return
 	 */
 	int getNumberOfQuestionsAnswered();
+	
+	/**
+	 * Represents the quiz in terms of its id#, its number of questions,
+	 * its active status, and the score out attempted questions.
+	 * 
+	 * @return String representation of a quiz.
+	 */
+	String toString();
 
 }

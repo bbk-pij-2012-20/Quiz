@@ -20,9 +20,9 @@ public class SetUpClient implements Serializable {
 			Remote remoteObj2 = Naming.lookup("//127.0.0.1:1099/setup");
 			SetUpService setUpService = (SetUpService) remoteObj2;
 					
-			System.out.println("Create new quizzes (y) or stop a quiz by entering its id#");					
+			System.out.println("\nCreate new quizzes (y) or stop a quiz by entering its id#");					
 			setUpService.processInput(scan.next().trim());
-			System.out.println(setUpService.getSetUpView());
+			System.out.println("Test" + setUpService.getSetUpView());
 
 		} catch (RemoteException e) {
 		
@@ -41,4 +41,4 @@ public class SetUpClient implements Serializable {
 	}
 	
 }
-//java -Djava.security.policy=QuizSecurity.txt SetUpClient 
+//java -Djava.security.policy=QSecurity.txt SetUpClient 

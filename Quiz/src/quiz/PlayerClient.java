@@ -19,7 +19,7 @@ public class PlayerClient implements Serializable{
 	
 			Remote remoteObj = Naming.lookup("//127.0.0.1:1099/play");
 			PlayerService playerService = (PlayerService) remoteObj;
-			System.out.println("Choose which game to play (1/2/3): "+playerService.getGameList());
+			System.out.println("\nChoose which game to play (1/2/3): "+playerService.getGameList());
 			
 			do {
 					
@@ -45,4 +45,4 @@ public class PlayerClient implements Serializable{
 	}
 	
 }
-//java -Djava.security.policy=QuizSecurity.txt PlayerClient 
+//java -Djava.security.policy=QSecurity.txt PlayerClient 

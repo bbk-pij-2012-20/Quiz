@@ -36,6 +36,6 @@ public interface PlayerService extends Remote, Serializable {
 	 * 
 	 * @return a String  which is returned to be output to UI via view
 	 */
-	String getPlayerView();
+	String getPlayerView() throws RemoteException;
 	
 }

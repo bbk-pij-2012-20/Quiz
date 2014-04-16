@@ -35,7 +35,7 @@ public class PlayerServer extends UnicastRemoteObject implements PlayerService, 
 	
 	}
 	
-	public String getPlayerView() {
+	public String getPlayerView() throws RemoteException {
 		
 		return playerView;
 		

@@ -118,6 +118,7 @@ public class QuizFactoryImpl implements QuizFactory {
 
 		quiz.setQuizId(quizId);
 		quizController.addNewQuiz(quiz);
+		quizController.updateView(quiz.toString());
 		
 	}	
 

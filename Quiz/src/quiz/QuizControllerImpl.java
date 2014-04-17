@@ -32,7 +32,6 @@ public class QuizControllerImpl implements QuizController, Serializable {
 	
 	}
 	
-	//userInput is now identifying which quiz to play 
 	@Override
 	public void playQuiz(int userInput) throws RemoteException {
 	
@@ -56,6 +55,11 @@ public class QuizControllerImpl implements QuizController, Serializable {
 		
 	}
 
+	/**
+	 * Opening view header to introduce the quiz.
+	 * 
+	 * @throws RemoteException
+	 */
 	private void startQuizHeader() throws RemoteException {
 	
 		updateView("------------------- NEW GAME -------------------\n\nThere are " 
@@ -64,8 +68,18 @@ public class QuizControllerImpl implements QuizController, Serializable {
 
 	}
 	
-	@Override
-	public void answerQuestions(int answerToSubmit) throws RemoteException {
+	
+	/**
+	 * Presents question and multiple choice answers to the player. 
+	 * It takes input from the player via playQuiz(int).
+	 * It calls private method shuffleAnswers(int) to re-order 
+	 * the correct answer position randomly. It calls private method
+	 * keepScore(int,int) to keep score. 
+	 * 
+	 * @param answerToSubmit    int input from playerClient via playQuiz(int)
+	 * @throws RemoteException
+	 */
+	private void answerQuestions(int answerToSubmit) throws RemoteException {
 
 		int noOfQuestionsAnswered = 0;
 		int newCorrectAnswerIndex = 0;	
@@ -130,14 +144,14 @@ public class QuizControllerImpl implements QuizController, Serializable {
 					
 	}
 
-
 	/**
 	 * Gets the quiz corresponding to the player's choice of question numbers 
-	 * from the list of quizzes held in QuizController (created by setUpClient). 
+	 * from the list of quizzes held in QuizController (created by setUpClient).
+	 * Either 1,2,or 3 for a 6,8,or 10 question quiz. 
 	 * 
-	 * @param choice
-	 * @return
-	 * @throws IllegalArgumentException
+	 * @param quizToActivate              the quizToActivate selection int 
+	 * @return Quiz                       the Quiz that was chosen
+	 * @throws IllegalArgumentException   if int choice passed is not 1,2 or 3
 	 */
 	private Quiz getChosenQuiz(int quizToActivate) throws IllegalArgumentException {
 	
@@ -175,7 +189,7 @@ public class QuizControllerImpl implements QuizController, Serializable {
 	
 	
 	/**
-	 * for setUpClient
+	 * for setUpClient only
 	 */
 	public synchronized void stopQuiz(int quizId) throws RemoteException {
 			
@@ -214,7 +228,7 @@ public class QuizControllerImpl implements QuizController, Serializable {
 	/**
 	 * Generates a new position for the correct answer (originally at position 2 in the que_AnsList), 
 	 * by random and immediately prior to being output to playerClient UI. It is only called from 
-	 * playQuiz(). 
+	 * answerQuestions(int). 
 	 *  
 	 * @param questionNo   an int position of the current que_AnsList held in the listOfQAndALists 
 	 * @return             an int new position of the correct answer in the current que_AndAnsList.
@@ -271,7 +285,6 @@ public class QuizControllerImpl implements QuizController, Serializable {
 		return scoreOutOf;
 		
 	}
-
 
 	public synchronized boolean isQuizActive(int quizId) {
 		

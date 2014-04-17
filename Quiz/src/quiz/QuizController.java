@@ -6,10 +6,11 @@ import java.io.Serializable;
 public interface QuizController extends Serializable {
 
 	/**
-	 * Begins chosen quiz. It calls the private method 
-	 * makeListOfQAndALists(), which calls private method isRepeatedQuestion(QueAndAns,int) to prevent 
-	 * repeating the same question. It calls two more private methods: keepScore(String,int,int) and 
-	 * shuffleAnswers(int).
+	 * Has a double use: first processes the player quiz selection
+	 * to activate the chosen quiz; all subsequent inputs are 
+	 * treated as answers to questions. They are processed by passing
+	 * the inputs to private method answerQuestions(int) as the player's 
+	 * chosen answer to each question one at a time. 
 	 * 
 	 * @throws RemoteException    (in case anything goes wrong with network connectivity)
 	 */
@@ -60,12 +61,5 @@ public interface QuizController extends Serializable {
 	 * @param newQuiz
 	 */
 	void addNewQuiz(Quiz newQuiz);
-
-	/**
-	 * 
-	 * @param answerToSubmit
-	 * @throws RemoteException
-	 */
-	void answerQuestions(int answerToSubmit) throws RemoteException;
 
 }

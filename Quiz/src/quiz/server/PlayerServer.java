@@ -1,8 +1,10 @@
-package quiz;
+package quiz.server;
 
 import java.rmi.server.UnicastRemoteObject;
 import java.rmi.RemoteException;
 import java.io.Serializable;
+
+import quiz.controller.QuizControllerImpl;
 
 /** 
  * PlayerServer generates a view of the UI for a player on server side. 

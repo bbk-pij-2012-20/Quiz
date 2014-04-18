@@ -1,4 +1,4 @@
-package quiz;
+package quiz.client;
 
 import java.rmi.Naming;
 import java.rmi.Remote;
@@ -6,6 +6,8 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Scanner;
 import java.io.Serializable;
+
+import quiz.server.SetUpService;
 
 public class SetUpClient implements Serializable {
 	

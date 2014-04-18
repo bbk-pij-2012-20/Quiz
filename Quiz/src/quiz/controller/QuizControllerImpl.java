@@ -1,10 +1,13 @@
-package quiz;
+package quiz.controller;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.io.Serializable;
+
+import quiz.interfaces.Quiz;
+import quiz.interfaces.QuizController;
 
 /**
  * QuizControllerImpl presents questions from a quiz and scores the answers 

@@ -1,4 +1,7 @@
-package quiz;
+package quiz.model;
+
+import quiz.interfaces.QueAndAns;
+import quiz.interfaces.Quiz;
 
 public class QuizImpl implements Quiz {
 

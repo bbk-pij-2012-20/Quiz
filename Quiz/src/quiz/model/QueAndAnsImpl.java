@@ -1,7 +1,9 @@
-package quiz;
+package quiz.model;
 
 import java.util.IllegalFormatException;
 import java.util.Random;
+
+import quiz.interfaces.QueAndAns;
 
 public class QueAndAnsImpl implements QueAndAns {
 
@@ -99,11 +101,11 @@ public class QueAndAnsImpl implements QueAndAns {
 		
 		if (listIndex == 0) {
 		
-			questionListIndex = randomObj.nextInt(database.questionListLength);
+			questionListIndex = randomObj.nextInt(database.getQuestionListLength());
 		
 		} else if (listIndex == 1) {
 		
-			countryListIndex = randomObj.nextInt(database.countryListLength);
+			countryListIndex = randomObj.nextInt(database.getCountryListLength());
 			
 		}
 

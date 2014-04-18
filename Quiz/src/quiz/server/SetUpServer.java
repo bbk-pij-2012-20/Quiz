@@ -1,8 +1,11 @@
-package quiz;
+package quiz.server;
 
 import java.rmi.server.UnicastRemoteObject;
 import java.rmi.RemoteException;
 import java.io.Serializable;
+
+import quiz.controller.QuizControllerImpl;
+import quiz.model.QuizFactoryImpl;
 
 public class SetUpServer extends UnicastRemoteObject implements SetUpService, Serializable {
 
@@ -14,7 +17,7 @@ public class SetUpServer extends UnicastRemoteObject implements SetUpService, Se
 	protected SetUpServer() throws RemoteException {}
 
 	@Override
-	public void processInput(String input) throws RemoteException {
+	public synchronized void processInput(String input) throws RemoteException {
 		
 		int idInput = 0;
 		

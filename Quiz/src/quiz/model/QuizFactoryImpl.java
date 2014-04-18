@@ -1,7 +1,12 @@
-package quiz;
+package quiz.model;
 
 import java.rmi.RemoteException;
 import java.util.Random;
+
+import quiz.controller.QuizControllerImpl;
+import quiz.interfaces.Quiz;
+import quiz.interfaces.QuizController;
+import quiz.interfaces.QuizFactory;
 
 /**
  * QuizFactoryImpl makes 3 quizzes, one quiz at a time.

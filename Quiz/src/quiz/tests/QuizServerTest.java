@@ -8,9 +8,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import quiz.QueAndAns;
-import quiz.QueAndAnsImpl;
-import quiz.QuizControllerImpl;
+import quiz.controller.QuizControllerImpl;
+import quiz.interfaces.QueAndAns;
+import quiz.model.QueAndAnsImpl;
 
 public class QuizServerTest {
 

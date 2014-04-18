@@ -1,4 +1,6 @@
-package quiz;
+package quiz.model;
+
+import quiz.interfaces.QuizDatabase;
 
 public class QuizDatabaseImpl implements QuizDatabase {
 

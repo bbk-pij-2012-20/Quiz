@@ -6,7 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import quiz.QueAndAnsImpl;
+import quiz.model.QueAndAnsImpl;
 
 public class QueAndAnsTest {
 

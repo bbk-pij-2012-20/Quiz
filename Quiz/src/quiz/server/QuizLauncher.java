@@ -1,4 +1,4 @@
-package quiz;
+package quiz.server;
 
 import java.rmi.Naming;
 import java.rmi.RMISecurityManager;
@@ -6,6 +6,12 @@ import java.rmi.registry.LocateRegistry;
 import java.net.MalformedURLException;
 import java.rmi.RemoteException;
 //import java.io.Serializable;  ?? do I need to implement here?
+
+
+
+
+
+
 
 public class QuizLauncher {
 
@@ -18,6 +24,8 @@ public class QuizLauncher {
 	
 	public void launch(){
 		
+		System.setProperty("java.security.policy", "src/QSecurity.policy");
+		
 		if (System.getSecurityManager() == null) {
 			
 			System.setSecurityManager(new RMISecurityManager());
@@ -27,8 +35,8 @@ public class QuizLauncher {
 		try {
 			
 			LocateRegistry.createRegistry(1099);
-			PlayerServer playerServer = new PlayerServer();
-			SetUpServer setUpServer = new SetUpServer();
+			PlayerService playerServer = new PlayerServer();
+			SetUpService setUpServer = new SetUpServer();
 			String registryHost = "//localhost/";
 			String serviceName = "play";
 			String serviceName2 = "setup";

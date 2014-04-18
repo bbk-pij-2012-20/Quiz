@@ -1,4 +1,5 @@
-package quiz;
+package quiz.interfaces;
+
 
 public interface Quiz {
 

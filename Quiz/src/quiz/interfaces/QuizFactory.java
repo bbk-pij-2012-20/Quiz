@@ -1,4 +1,4 @@
-package quiz;
+package quiz.interfaces;
 
 import java.rmi.RemoteException;
 

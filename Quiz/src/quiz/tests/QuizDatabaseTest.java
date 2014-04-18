@@ -6,7 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import quiz.QuizDatabaseImpl;
+import quiz.model.QuizDatabaseImpl;
 
 public class QuizDatabaseTest {
 

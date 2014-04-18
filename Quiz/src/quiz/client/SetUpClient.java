@@ -11,7 +11,7 @@ import quiz.server.SetUpService;
 
 public class SetUpClient implements Serializable {
 	
-	private static final long serialVersionUID = -2530077513828507665L;
+//	private static final long serialVersionUID = -2530077513828507665L;
 	
 	public static void main(String[] args) {
 		
@@ -23,9 +23,11 @@ public class SetUpClient implements Serializable {
 			SetUpService setUpService = (SetUpService) remoteObj2;
 					
 			System.out.println("\nCreate new quizzes (y) or stop a quiz by entering its id#");					
-			setUpService.processInput(scan.next().trim());
-			System.out.println("Test" + setUpService.getSetUpView());
-
+			String input = scan.next().trim().toLowerCase();
+			setUpService.processInput(input);
+			System.out.println("Id#s of quizzes made: " + setUpService.getSetUpView());
+			
+			
 		} catch (RemoteException e) {
 		
 			e.printStackTrace();

@@ -47,4 +47,3 @@ public class PlayerClient implements Serializable{
 	}
 	
 }
-//java -Djava.security.policy=QSecurity.txt PlayerClient 

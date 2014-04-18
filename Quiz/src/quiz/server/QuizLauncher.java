@@ -54,4 +54,3 @@ public class QuizLauncher {
 		}
 	}
 }
-//java -Djava.security.policy=QuizSecurity.txt QuizLauncher

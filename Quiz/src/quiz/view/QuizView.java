@@ -1,10 +1,10 @@
 package quiz.view;
 
-public interface View {
+public interface QuizView {
 
 	/**
 	 * 
-	 * @param view
+	 * @param quizView
 	 */
 	void updateSetUpView(String view);
 
@@ -13,5 +13,11 @@ public interface View {
 	 * @param view
 	 */
 	void updatePlayerView(String view);
+
+	/**
+	 * 
+	 * @return
+	 */
+	String toString();
 	
 }

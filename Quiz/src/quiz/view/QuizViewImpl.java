@@ -1,6 +1,6 @@
 package quiz.view;
 
-public class ViewImpl implements View {
+public class QuizViewImpl implements QuizView {
 
 	String view = "";
 	
@@ -15,6 +15,13 @@ public class ViewImpl implements View {
 	public synchronized void updatePlayerView(String view) {
 		
 		this.view += view;
+		
+	}
+	
+	@Override
+	public String toString() {
+		
+		return view;
 		
 	}
 	

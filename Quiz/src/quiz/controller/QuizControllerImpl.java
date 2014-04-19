@@ -8,6 +8,9 @@ import java.io.Serializable;
 
 import quiz.interfaces.Quiz;
 import quiz.interfaces.QuizController;
+import quiz.server.SetUpServer;
+import quiz.view.QuizView;
+import quiz.view.QuizViewImpl;
 
 /**
  * QuizControllerImpl presents questions from a quiz and scores the answers 
@@ -21,10 +24,10 @@ public class QuizControllerImpl implements QuizController, Serializable {
 	private static final long serialVersionUID = 4592620853082060733L;
 	private final int ORIGINAL_CORRECT_ANSWER_INDEX = 2;
 	private final int ANSWER_INDEX_START = 2;
-	private String view = "";
 	private Quiz currentQuiz = null;
 	private List<Quiz> quizList;
-	
+	private QuizView quizView;
+
 	/**
 	 * Empty constructor must be explicitly written for RMI to work.
 	 * @throws RemoteException  (in case anything goes wrong with network connectivity)
@@ -32,11 +35,12 @@ public class QuizControllerImpl implements QuizController, Serializable {
 	public QuizControllerImpl() throws RemoteException {
 		
 		quizList = new ArrayList<>();
+		quizView = new QuizViewImpl();
 	
 	}
 	
 	@Override
-	public void playQuiz(int userInput) throws RemoteException {
+	public QuizView playQuiz(int userInput) throws RemoteException {
 	
 		int answerToSubmit = 0;
 		int quizToActivate = 0;
@@ -56,6 +60,8 @@ public class QuizControllerImpl implements QuizController, Serializable {
 		startQuizHeader();
 		answerQuestions(answerToSubmit);
 		
+		return quizView;
+		
 	}
 
 	/**
@@ -65,7 +71,7 @@ public class QuizControllerImpl implements QuizController, Serializable {
 	 */
 	private void startQuizHeader() throws RemoteException {
 	
-		updateView("------------------- NEW GAME -------------------\n\nThere are " 
+		quizView.updatePlayerView("------------------- NEW GAME -------------------\n\nThere are " 
 		+ currentQuiz.getNoOfQuestionsPerQuiz() + " questions to answer. \nSelect one of the " 
 		+ currentQuiz.getQueAndAns()[0].getNoOfAnswersPerQuestion() + " answers\n\n ------------------------------------------------\n");
 
@@ -90,16 +96,16 @@ public class QuizControllerImpl implements QuizController, Serializable {
 	
 		do {
 			
-			updateView("Question#");
-			updateView(questionNo + 1 +":\n");
-			updateView(currentQuiz.getQueAndAns()[questionNo].toString()+"\n");
-			updateView("Pick one of the following answers: \n");
+			quizView.updatePlayerView("Question#");
+			quizView.updatePlayerView(questionNo + 1 +":\n");
+			quizView.updatePlayerView(currentQuiz.getQueAndAns()[questionNo].toString()+"\n");
+			quizView.updatePlayerView("Pick one of the following answers: \n");
 			
 			newCorrectAnswerIndex = shuffleAnswers(questionNo);
 			
 			for (int answerNo = 0; answerNo < currentQuiz.getQueAndAns()[0].getNoOfAnswersPerQuestion(); answerNo++) {
 	
-				updateView(answerNo + 1 + ".  " + currentQuiz.getQueAndAns()[questionNo].getQue_AnsList()[answerNo + ANSWER_INDEX_START] + "\n");
+				quizView.updatePlayerView(answerNo + 1 + ".  " + currentQuiz.getQueAndAns()[questionNo].getQue_AnsList()[answerNo + ANSWER_INDEX_START] + "\n");
 				
 			}
 
@@ -110,7 +116,7 @@ public class QuizControllerImpl implements QuizController, Serializable {
 
 		if (noOfQuestionsAnswered == currentQuiz.getNoOfQuestionsPerQuiz()) {
 			
-			updateView("You answered " + currentQuiz.getScore() + " out of "+ currentQuiz.getNoOfQuestionsPerQuiz() + "correctly \n");
+			quizView.updatePlayerView("You answered " + currentQuiz.getScore() + " out of "+ currentQuiz.getNoOfQuestionsPerQuiz() + "correctly \n");
 
 		}
 		
@@ -184,6 +190,7 @@ public class QuizControllerImpl implements QuizController, Serializable {
 		
 	}
 	
+	@Override
 	public boolean isCurrentQuizActive() {
 		
 		return currentQuiz.getQuizIsActive();
@@ -194,6 +201,7 @@ public class QuizControllerImpl implements QuizController, Serializable {
 	/**
 	 * for setUpClient only
 	 */
+	@Override
 	public synchronized void stopQuiz(int quizId) throws RemoteException {
 			
 		try {
@@ -209,9 +217,9 @@ public class QuizControllerImpl implements QuizController, Serializable {
 				if (quiz.getQuizId() == quizId) {
 				
 					quiz.setQuizIsActive(false);
-					updateView("\n-------------------------------------------\n"
+					quizView.updatePlayerView("\n-------------------------------------------\n"
 							+ "quiz with id# " + quizId + " is now stopped\n");
-					updateView("Player scored " + getScoreOutOf(quizId)
+					quizView.updatePlayerView("Player scored " + getScoreOutOf(quizId)
 							+ "\n-------------------------------------------\n");
 				
 				}
@@ -222,7 +230,7 @@ public class QuizControllerImpl implements QuizController, Serializable {
 			
 			String ExceptionMsg = "No quiz by that id# exists in QuizController's quizList";
 			System.out.println(ExceptionMsg);
-			updateView(ExceptionMsg);
+			quizView.updatePlayerView(ExceptionMsg);
 			
 		}
 		
@@ -319,20 +327,6 @@ public class QuizControllerImpl implements QuizController, Serializable {
 		
 		quizList.add(newQuiz);
 		
-	}
-
-	@Override
-	public void updateView(String view) throws RemoteException {
-	
-		this.view += view;
-		
-	}
-	
-	@Override
-	public String getView() throws RemoteException {
-	
-		return view;
-	
 	}
 	
 }

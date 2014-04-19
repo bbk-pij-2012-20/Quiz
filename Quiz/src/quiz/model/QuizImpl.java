@@ -125,11 +125,11 @@ public class QuizImpl implements Quiz {
 			
 		}
 	
-		return "Quiz id# " + quizId + "has " + noOfQuestionsPerQuiz 
-				+ " questions in total.\n" + "It is currently " 
-				+ status + " active.\n"
-				+ "Player scored " + score + " out of " 
-				+ numberOfQuestionsAnswered + " attempted.\n";
+		return "\nQuiz id# " + quizId + ":" + "\n - has " + noOfQuestionsPerQuiz 
+				+ " questions in total.\n" + " - current status = " 
+				+ status + " active"
+				+ "\n - player scored: " + score + " out of " 
+				+ numberOfQuestionsAnswered + " attempted\n";
 		
 	}
 

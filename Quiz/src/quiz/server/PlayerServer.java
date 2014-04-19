@@ -4,7 +4,8 @@ import java.rmi.server.UnicastRemoteObject;
 import java.rmi.RemoteException;
 import java.io.Serializable;
 
-import quiz.controller.QuizControllerImpl;
+import quiz.client.SetUpClient;
+import quiz.interfaces.QuizController;
 
 /** 
  * PlayerServer generates a view of the UI for a player on server side. 
@@ -14,10 +15,48 @@ import quiz.controller.QuizControllerImpl;
 public class PlayerServer extends UnicastRemoteObject implements PlayerService, Serializable {
 
 	private static final long serialVersionUID = 7708290464329235363L;
-	private QuizControllerImpl quizController = new QuizControllerImpl();
+	private QuizController quizController;
 	private String playerView = "";
+	private SetUpServer setUpServer = new SetUpServer();
 	
-	protected PlayerServer() throws RemoteException {}
+	protected PlayerServer() throws RemoteException {
+		
+		try {
+					
+			if (setUpServer.getQuizController() == null) {
+				
+				System.out.println("no quizzes made yet");
+				throw new NullPointerException();
+				
+			} else {
+				
+				this.quizController = setUpServer.getQuizController();
+
+			}
+			
+			if (setUpServer.getSetUpView() == null) {
+				
+				System.out.println("no quizzes or setup views made yet");
+				throw new NullPointerException();
+				
+			} else {
+				
+				playerView = setUpServer.getSetUpView();
+				
+			}
+			
+		} catch (NullPointerException e) {
+			
+			e.printStackTrace();
+			
+		} catch (Exception e) {
+			
+			System.out.println("an exception other than NullPointerException thrown");
+			e.printStackTrace();
+			
+		}
+	
+	}
 
 	@Override
 	public String getGameList() throws RemoteException {
@@ -32,8 +71,7 @@ public class PlayerServer extends UnicastRemoteObject implements PlayerService, 
 	@Override
 	public void processInput(int userInput) throws RemoteException {
 					
-		quizController.playQuiz(userInput);
-		playerView = quizController.getView();
+		playerView = setUpServer.getQuizController().playQuiz(userInput).toString();
 	
 	}
 	

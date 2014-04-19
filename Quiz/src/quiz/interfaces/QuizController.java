@@ -3,6 +3,8 @@ package quiz.interfaces;
 import java.rmi.RemoteException;
 import java.io.Serializable;
 
+import quiz.view.QuizView;
+
 public interface QuizController extends Serializable {
 
 	/**
@@ -14,21 +16,7 @@ public interface QuizController extends Serializable {
 	 * 
 	 * @throws RemoteException    (in case anything goes wrong with network connectivity)
 	 */
-	void playQuiz(int userInput) throws RemoteException;
-	
-	/**
-	 * 
-	 * @param view
-	 * @throws RemoteException  (in case anything goes wrong with network connectivity)
-	 */
-	void updateView(String view) throws RemoteException;
-
-	/**
-	 * 
-	 * @return
-	 * @throws RemoteException  (in case anything goes wrong with network connectivity)
-	 */
-	String getView() throws RemoteException;
+	QuizView playQuiz(int userInput) throws RemoteException;
 
 	/**
 	 * getter for score (primarily for JUnit)
@@ -61,5 +49,11 @@ public interface QuizController extends Serializable {
 	 * @param newQuiz
 	 */
 	void addNewQuiz(Quiz newQuiz);
+
+	/**
+	 * 
+	 * @return
+	 */
+	boolean isCurrentQuizActive();
 
 }

@@ -7,6 +7,8 @@ import quiz.controller.QuizControllerImpl;
 import quiz.interfaces.Quiz;
 import quiz.interfaces.QuizController;
 import quiz.interfaces.QuizFactory;
+import quiz.view.QuizView;
+import quiz.view.QuizViewImpl;
 
 /**
  * QuizFactoryImpl makes 3 quizzes, one quiz at a time.
@@ -17,15 +19,24 @@ import quiz.interfaces.QuizFactory;
  */
 public class QuizFactoryImpl implements QuizFactory {
 	
+	private QuizView quizView;
+	private QuizController quizController;
+	
 	@Override
-	public void make3Quizzes() throws RemoteException {
+	public QuizView make3Quizzes() throws RemoteException {
 				
+		quizController = new QuizControllerImpl();
+		quizView = new QuizViewImpl();
+
 		for (int noOfQuestions=6; noOfQuestions<=10; noOfQuestions=noOfQuestions+2) {
 			
-			makeQuiz(noOfQuestions);
+			makeQuiz(noOfQuestions);// not sure about this return here.. 
 			
 		}
-		
+		System.out.println("bottom of make3Quizzes().....");
+
+		return quizView;	
+
 	}
 	
 	/**
@@ -55,7 +66,8 @@ public class QuizFactoryImpl implements QuizFactory {
 			}
 				
 		}
-		
+		System.out.println("makeQuiz()????");
+
 		generateAndSetId(quiz);
 		
 	}
@@ -113,7 +125,6 @@ public class QuizFactoryImpl implements QuizFactory {
 		
 		int quizId = 0;
 		Random randomObj = new Random();
-		QuizController quizController = new QuizControllerImpl();
 		
 		do {
 			
@@ -123,8 +134,15 @@ public class QuizFactoryImpl implements QuizFactory {
 
 		quiz.setQuizId(quizId);
 		quizController.addNewQuiz(quiz);
-		quizController.updateView(quiz.toString());
+		System.out.println("QuizFactories generateAndSetId() bottom......");
+		initAndUpdateView(quiz);
 		
 	}	
+	
+	private void initAndUpdateView(Quiz quiz) {
+		
+		quizView.updateSetUpView(quiz.toString());
+		
+	}
 
 }

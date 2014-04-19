@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.Remote;
 
+import quiz.controller.QuizControllerImpl;
+
 public interface SetUpService extends Remote, Serializable {
 
 	/**
@@ -23,5 +25,11 @@ public interface SetUpService extends Remote, Serializable {
 	 * @return
 	 */
 	String getSetUpView() throws RemoteException;
+
+	/**
+	 * 
+	 * @return
+	 */
+	QuizControllerImpl getQuizController() throws RemoteException;
 	
 }

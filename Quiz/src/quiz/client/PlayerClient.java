@@ -7,12 +7,13 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Scanner;
 
+import quiz.interfaces.QuizController;
 import quiz.server.PlayerService;
 
 public class PlayerClient implements Serializable{
 	
 	private static final long serialVersionUID = 4942293985111888448L;
-		
+	
 	public static void main(String[] args) {
 		
 		Scanner scan = new Scanner(System.in);

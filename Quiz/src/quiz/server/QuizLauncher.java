@@ -5,15 +5,9 @@ import java.rmi.RMISecurityManager;
 import java.rmi.registry.LocateRegistry;
 import java.net.MalformedURLException;
 import java.rmi.RemoteException;
-//import java.io.Serializable;  ?? do I need to implement here?
 
-
-
-
-
-
-
-public class QuizLauncher {
+public class
+QuizLauncher {
 
 	public static void main(String[] args) {
 		
@@ -35,8 +29,8 @@ public class QuizLauncher {
 		try {
 			
 			LocateRegistry.createRegistry(1099);
-			PlayerService playerServer = new PlayerServer();
-			SetUpService setUpServer = new SetUpServer();
+			PlayerServer playerServer = new PlayerServer();
+			SetUpServer setUpServer = new SetUpServer();
 			String registryHost = "//localhost/";
 			String serviceName = "play";
 			String serviceName2 = "setup";

@@ -25,7 +25,7 @@ public class SetUpClient implements Serializable {
 			System.out.println("\nCreate new quizzes (y) or stop a quiz by entering its id#");					
 			String input = scan.next().trim().toLowerCase();
 			setUpService.processInput(input);
-			System.out.println("Id#s of quizzes made: " + setUpService.getSetUpView());
+			System.out.println("---------------\n3 quizzes made:\n--------------- " + setUpService.getSetUpView());
 			
 			
 		} catch (RemoteException e) {

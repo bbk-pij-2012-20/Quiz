@@ -6,8 +6,7 @@ import java.rmi.registry.LocateRegistry;
 import java.net.MalformedURLException;
 import java.rmi.RemoteException;
 
-public class
-QuizLauncher {
+public class QuizLauncher {
 
 	public static void main(String[] args) {
 		

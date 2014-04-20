@@ -64,4 +64,6 @@ public interface QuizController extends Serializable {
 	 */
 	List<Quiz> getQuizList();
 
+	void readInQuizList();
+
 }

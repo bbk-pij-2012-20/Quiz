@@ -52,9 +52,6 @@ public class SetUpServer extends UnicastRemoteObject implements SetUpService, Se
 		
 		}
 
-		System.out.println("LINE 55 processInput().....");
-//		setUpView = "goodbye";	
-
 	}
 	
 	@Override

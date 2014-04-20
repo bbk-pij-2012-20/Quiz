@@ -41,8 +41,9 @@ public class PlayerServer extends UnicastRemoteObject implements PlayerService, 
 	@Override
 	public void processInput(int userInput) throws RemoteException {
 					
-		playerView = setUpServer.getQuizController().playQuiz(userInput).toString();
-		setUpServer.getQuizController().readInQuizList();
+		quizController = setUpServer.getQuizController();
+		quizController.readInQuizList();
+		playerView = quizController.playQuiz(userInput).toString();
 	
 	}
 	

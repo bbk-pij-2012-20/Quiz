@@ -40,12 +40,14 @@ public class QuizControllerImpl implements QuizController, Serializable {
 	 */
 	public QuizControllerImpl() throws RemoteException {
 		
+		quizList = new ArrayList<>();
 		quizView = new QuizViewImpl();
 	
 	}
 
 	//reads in the file called QuizList.ser and turns it into arrayList called quizList 
 	@SuppressWarnings("unchecked")
+	@Override
 	public void readInQuizList() {
 		
 		ObjectInputStream instream = null;

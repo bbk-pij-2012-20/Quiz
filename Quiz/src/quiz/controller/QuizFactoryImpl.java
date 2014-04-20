@@ -38,7 +38,7 @@ public class QuizFactoryImpl implements QuizFactory {
 
 		for (int noOfQuestions=6; noOfQuestions<=10; noOfQuestions=noOfQuestions+2) {
 			
-			makeQuiz(noOfQuestions);// not sure about this return here.. 
+			makeQuiz(noOfQuestions);
 			
 		}
 

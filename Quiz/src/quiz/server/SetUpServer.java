@@ -5,9 +5,9 @@ import java.rmi.RemoteException;
 import java.io.Serializable;
 
 import quiz.controller.QuizControllerImpl;
+import quiz.controller.QuizFactoryImpl;
 import quiz.interfaces.QuizController;
 import quiz.interfaces.QuizFactory;
-import quiz.model.QuizFactoryImpl;
 import quiz.view.QuizView;
 import quiz.view.QuizViewImpl;
 
@@ -32,7 +32,7 @@ public class SetUpServer extends UnicastRemoteObject implements SetUpService, Se
 		int idInput = 0;
 		
 		if (input.charAt(0) == 'y') {
-			System.out.println("LINE 35 processInput().....");
+			
 			setUpView.updateSetUpView(quizFactory.make3Quizzes().toString());
 		
 		} else {

@@ -4,10 +4,15 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 import quiz.interfaces.Quiz;
 import quiz.interfaces.QuizController;
+import quiz.model.QuizImpl;
 import quiz.server.SetUpServer;
 import quiz.view.QuizView;
 import quiz.view.QuizViewImpl;
@@ -27,6 +32,7 @@ public class QuizControllerImpl implements QuizController, Serializable {
 	private Quiz currentQuiz = null;
 	private List<Quiz> quizList;
 	private QuizView quizView;
+	private String IN_QUIZLIST_FILENAME = "QuizList.ser";
 
 	/**
 	 * Empty constructor must be explicitly written for RMI to work.
@@ -34,11 +40,55 @@ public class QuizControllerImpl implements QuizController, Serializable {
 	 */
 	public QuizControllerImpl() throws RemoteException {
 		
-		quizList = new ArrayList<>();
 		quizView = new QuizViewImpl();
 	
 	}
-	
+
+	//reads in the file called QuizList.ser and turns it into arrayList called quizList 
+	@SuppressWarnings("unchecked")
+	public void readInQuizList() {
+		
+		ObjectInputStream instream = null;
+		
+		try {
+	          
+			instream = new ObjectInputStream(
+					   new BufferedInputStream(
+					   new FileInputStream(IN_QUIZLIST_FILENAME)));
+
+		} catch (IOException e) {
+	      
+			e.printStackTrace();
+	      
+		}
+	        
+		try {
+	     
+			quizList  = (List<Quiz>) instream.readObject();
+	     
+		} catch (IOException e) {
+	     
+			e.printStackTrace();
+	     
+		} catch (ClassNotFoundException e) {
+	     
+			e.printStackTrace();
+	     
+		}
+
+			System.out.println("After: " + quizList);
+	     
+		try {
+	        
+			instream.close();
+	        
+		} catch (IOException e) {
+	        
+			e.printStackTrace();
+	        
+		}
+
+	}
 	@Override
 	public QuizView playQuiz(int userInput) throws RemoteException {
 	
@@ -323,14 +373,14 @@ public class QuizControllerImpl implements QuizController, Serializable {
 	}
 	
 	@Override
-	public void addNewQuiz(Quiz newQuiz) {
+	public void addToQuizList(Quiz newQuiz) {
 		
 		quizList.add(newQuiz);
 		
 	}
 
 	@Override
-	public List<Quiz> getQuizzes() {
+	public List<Quiz> getQuizList() {
 		
 		return quizList;
 	

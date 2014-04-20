@@ -1,6 +1,8 @@
 package quiz.interfaces;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 import java.io.Serializable;
 
 import quiz.view.QuizView;
@@ -48,12 +50,18 @@ public interface QuizController extends Serializable {
 	 * 
 	 * @param newQuiz
 	 */
-	void addNewQuiz(Quiz newQuiz);
+	void addToQuizList(Quiz newQuiz);
 
 	/**
 	 * 
 	 * @return
 	 */
 	boolean isCurrentQuizActive();
+
+	/**
+	 * 
+	 * @return
+	 */
+	List<Quiz> getQuizList();
 
 }

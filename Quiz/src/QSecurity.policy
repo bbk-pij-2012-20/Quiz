@@ -1,4 +1,7 @@
-grant 
-{
+grant {
 	permission java.net.SocketPermission "127.0.0.1:*", "accept,connect";
+	permission java.io.FilePermission "QuizList.ser", "write"; 
+	permission java.io.FilePermission "QuizList.ser", "read"; 
+
 };
+

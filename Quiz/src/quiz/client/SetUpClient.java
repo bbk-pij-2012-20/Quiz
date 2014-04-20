@@ -9,10 +9,8 @@ import java.io.Serializable;
 
 import quiz.server.SetUpService;
 
-public class SetUpClient implements Serializable {
-	
-//	private static final long serialVersionUID = -2530077513828507665L;
-	
+public class SetUpClient { //implements Serializable {
+		
 	public static void main(String[] args) {
 		
 		Scanner scan = new Scanner(System.in);

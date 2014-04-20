@@ -1,5 +1,6 @@
 package quiz.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;
@@ -40,9 +41,8 @@ public class QuizFactoryImpl implements QuizFactory {
 			makeQuiz(noOfQuestions);// not sure about this return here.. 
 			
 		}
-		System.out.println("bottom of make3Quizzes().....");
 
-		writeQuizzesToFile();
+		writeQuizListToFile();
 		return quizView;	
 
 	}
@@ -74,7 +74,6 @@ public class QuizFactoryImpl implements QuizFactory {
 			}
 				
 		}
-		System.out.println("makeQuiz()????");
 
 		generateAndSetId(quiz);
 		
@@ -141,8 +140,7 @@ public class QuizFactoryImpl implements QuizFactory {
 		} while (quizController.containsQuizWithId(quizId));
 
 		quiz.setQuizId(quizId);
-		quizController.addNewQuiz(quiz);
-		System.out.println("QuizFactories generateAndSetId() bottom......");
+		quizController.addToQuizList(quiz);
 		initAndUpdateView(quiz);
 		
 	}	
@@ -153,11 +151,11 @@ public class QuizFactoryImpl implements QuizFactory {
 		
 	}
 	
-	
-	private 	void writeQuizzesToFile() {
+	//turns the quizList, just created, into stream and writes out to file called QuizList.ser. 
+	private 	void writeQuizListToFile() {
 		
 		final String OUT_QUIZLIST_FILENAME = "QuizList.ser";
-		List<Quiz> quizList = quizController.getQuizzes();
+		List<QuizImpl> quizList = new ArrayList<QuizImpl>();
 		
 		ObjectOutputStream encode = null;
 			

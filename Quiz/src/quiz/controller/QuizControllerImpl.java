@@ -328,5 +328,12 @@ public class QuizControllerImpl implements QuizController, Serializable {
 		quizList.add(newQuiz);
 		
 	}
+
+	@Override
+	public List<Quiz> getQuizzes() {
+		
+		return quizList;
+	
+	}
 	
 }

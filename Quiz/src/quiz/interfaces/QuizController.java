@@ -1,7 +1,6 @@
 package quiz.interfaces;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
 
@@ -64,6 +63,14 @@ public interface QuizController extends Serializable {
 	 */
 	List<Quiz> getQuizList();
 
+	/**
+	 * Uses an object input stream, which wraps a buffered input stream, 
+	 * which wraps a file input stream, which wraps a file by its name string, 
+	 * to convert a file (located in the same directory) into an object (an
+	 * list of 3 quizzes made by SetUpServer via QuizFactory, which should have
+	 * written the quizzes out to file with a method similar to this one).   
+	 *  
+	 */
 	void readInQuizList();
 
 }

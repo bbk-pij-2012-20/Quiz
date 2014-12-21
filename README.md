@@ -10,7 +10,7 @@ The requirements of the task are cut & pasted below. Below this is my descriptio
 (This and the other 3 programming courseworks came after the introduction to programming with 'Java exercises' https://github.com/bbk-pij-2012-20/JavaExercises)
 
 
-<h2>The problem description</h2>
+<h3>The problem description</h3>
 
 You are asked to design and implement a simple on-line quiz game using Java RMI. This assignment is to be carried out individually.
 

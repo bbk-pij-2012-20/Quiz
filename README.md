@@ -1,5 +1,5 @@
 **Quiz game**
----------
+---------------------------------------------------------------------------------------------------------------------------------------
 
 This is the 2nd of 4 programming courseworks I completed (March/April 2014) as part of a conversion masters in Computer Science at Birkbeck College London.
 
@@ -10,7 +10,6 @@ The requirements of the task are cut & pasted below. Below this is my descriptio
 (This and the other 3 programming courseworks came after the introduction to programming with 'Java exercises' https://github.com/bbk-pij-2012-20/JavaExercises)
 
 ---
-
 The problem description
 
 You are asked to design and implement a simple on-line quiz game using Java RMI. This assignment is to be carried out individually.

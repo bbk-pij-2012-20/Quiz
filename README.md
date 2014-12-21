@@ -9,12 +9,13 @@ The requirements of the task are cut & pasted below. Below this is my descriptio
 
 (This and the other 3 programming courseworks came after the introduction to programming with 'Java exercises' https://github.com/bbk-pij-2012-20/JavaExercises)
 
+---
 
 <h3>The problem description</h3>
 
 You are asked to design and implement a simple on-line quiz game using Java RMI. This assignment is to be carried out individually.
 
-<h2>The quiz game</h2>
+<h3>The quiz game</h3>
 
 The quiz game system should consist of a central quiz server and two separate client programs: a set-up client and a player client.
 
@@ -30,9 +31,9 @@ The quiz game server should deal with (potentially concurrent) requests from the
 Please note: you are not expected to provide a sophisticated user interface for the two client programs (a simple text based interface will suffice).
 Your grading will depend on the functionality of the system you provide; the above is a barebones description of the system and you should add additional functionaility as you feel appropriate.
 
+---
 
-
-<h2>Description of how I built my Quiz</h2>
+<h3>Description of how I built my Quiz</h3>
 
 
 I began by building a non-networked quiz game, using TDD (most of the time). When all tests passed, the program worked well.

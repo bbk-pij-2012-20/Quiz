@@ -1,4 +1,4 @@
-*Quiz game*
+###Quiz game
 ---------------------------------------------------------------------------------------------------------------------------------------
 
 This is the 2nd of 4 programming courseworks I completed (March/April 2014) as part of a conversion masters in Computer Science at Birkbeck College London.

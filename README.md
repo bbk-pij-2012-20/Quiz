@@ -5,9 +5,9 @@ This is the 2nd of 4 programming courseworks I completed (March/April 2014) as p
 
 The coursework task was to build a simple Quiz game (no GUI needed), that runs from a server and allows two clients to play via network programming such as RMI.
 
-The requirements of the task are cut & pasted below. Below this is my description of what I did. 
-
 (This and the other 3 programming courseworks came after the introduction to programming with 'Java exercises' https://github.com/bbk-pij-2012-20/JavaExercises)
+
+The requirements of the task are shown here, (cut & pasted from the original document). Below that is is my description of what I did. 
 
 ---
 

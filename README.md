@@ -11,7 +11,7 @@ The requirements of the task are cut & pasted below. Below this is my descriptio
 
 ---
 
-###The problem description
+The problem description
 
 You are asked to design and implement a simple on-line quiz game using Java RMI. This assignment is to be carried out individually.
 
